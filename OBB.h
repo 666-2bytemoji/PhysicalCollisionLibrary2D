@@ -21,6 +21,7 @@ public:
     virtual bool CollisionDetection(const AABB *collider) const override;
     virtual bool CollisionDetection(const OBB *collider) const override;
     virtual bool CollisionDetection(const Capsule *collider) const override;
+    virtual bool CollisionDetection(const Triangle *collider) const override;
     virtual bool CollisionDetection(const ConvexHull *collider) const override;
 
     //ëºÇÃè’ìÀîªíËóÃàÊÇ∆Ç«ÇÃÇÊÇ§Ç…åç∑ÇµÇƒÇ¢ÇÈÇ©
@@ -29,6 +30,7 @@ public:
     virtual Vector2D CalcDumpWith(const AABB *collider) const override;
     virtual Vector2D CalcDumpWith(const OBB *collider) const override;
     virtual Vector2D CalcDumpWith(const Capsule *collider) const override;
+    virtual Vector2D CalcDumpWith(const Triangle *collider) const override;
     virtual Vector2D CalcDumpWith(const ConvexHull *collider) const override;
 
     void SetScale(const Vector2D scale) override;
@@ -46,7 +48,7 @@ public:
     bool Contain(Vector2D point) const;
 
 private:
-    
+
     Vector2D _elemWidth, _elemHeight;
 };
 

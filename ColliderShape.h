@@ -6,6 +6,7 @@ class Circle;
 class AABB;
 class OBB;
 class Capsule;
+class Triangle;
 class ConvexHull;
 
 class ColliderShape
@@ -15,7 +16,7 @@ public:
     ~ColliderShape();
 
     //拡大率を含んだ衝突判定のサイズを得る
-    Vector2D GetSize() const 
+    Vector2D GetSize() const
     {
         return Vector2D(_baseSize._x * _scale._x, _baseSize._y * _scale._y);
     }
@@ -45,6 +46,7 @@ public:
     virtual bool CollisionDetection(const AABB *collider) const = 0;
     virtual bool CollisionDetection(const OBB *collider) const = 0;
     virtual bool CollisionDetection(const Capsule *collider) const = 0;
+    virtual bool CollisionDetection(const Triangle *collider) const = 0;
     virtual bool CollisionDetection(const ConvexHull *collider) const = 0;
 
     //他の衝突判定領域とどのように交差しているか
@@ -53,6 +55,7 @@ public:
     virtual Vector2D CalcDumpWith(const AABB *collider) const = 0;
     virtual Vector2D CalcDumpWith(const OBB *collider) const = 0;
     virtual Vector2D CalcDumpWith(const Capsule *collider) const = 0;
+    virtual Vector2D CalcDumpWith(const Triangle *collider) const = 0;
     virtual Vector2D CalcDumpWith(const ConvexHull *collider) const = 0;
 
     //境界ボリュームの線を描く

@@ -2,6 +2,7 @@
 #include "Circle.h"
 #include "OBB.h"
 #include "Capsule.h"
+#include "Triangle.h"
 #include "ConvexHull.h"
 
 
@@ -83,6 +84,12 @@ bool AABB::CollisionDetection(const Capsule *collider) const
 }
 
 
+bool AABB::CollisionDetection(const Triangle *collider) const
+{
+    return false;
+}
+
+
 bool AABB::CollisionDetection(const ConvexHull *collider) const
 {
     return collider->CollisionDetection(this);
@@ -160,6 +167,12 @@ Vector2D AABB::CalcDumpWith(const Capsule *collider) const
 {
     Vector2D vec = collider->CalcDumpWith(this);
     return vec * -1;
+}
+
+
+Vector2D AABB::CalcDumpWith(const Triangle *collider) const
+{
+    return Vector2D::zero;
 }
 
 

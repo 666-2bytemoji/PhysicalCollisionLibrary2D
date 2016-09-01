@@ -2,6 +2,7 @@
 #include "AABB.h"
 #include "OBB.h"
 #include "Capsule.h"
+#include "Triangle.h"
 #include "ConvexHull.h"
 #include "Geometric.h"
 
@@ -48,6 +49,13 @@ double Circle::GetMaxY() const
 }
 
 
+void Circle::SetScale(const Vector2D scale)
+{
+	_scale = scale;
+	_radius = _baseSize._x * scale._x;
+}
+
+
 bool Circle::CollisionWith(const ColliderShape *collider) const
 {
     return collider->CollisionDetection(this);
@@ -82,6 +90,12 @@ bool Circle::CollisionDetection(const Capsule *collider) const
 }
 
 
+bool Circle::CollisionDetection(const Triangle *collider) const
+{
+    return collider->CollisionDetection(this);
+}
+
+
 bool Circle::CollisionDetection(const ConvexHull *collider) const
 {
     return collider->CollisionDetection(this);
@@ -91,13 +105,6 @@ bool Circle::CollisionDetection(const ConvexHull *collider) const
 Vector2D Circle::CalcDump(const ColliderShape *collider) const
 {
     return collider->CalcDumpWith(this);
-}
-
-
-void Circle::SetScale(const Vector2D scale)
-{
-    _scale = scale;
-    _radius = _baseSize._x * scale._x;
 }
 
 
@@ -145,6 +152,13 @@ Vector2D Circle::CalcDumpWith(const OBB *collider) const
 
 
 Vector2D Circle::CalcDumpWith(const Capsule *collider) const
+{
+    Vector2D vec = collider->CalcDumpWith(this);
+    return vec * -1;
+}
+
+
+Vector2D Circle::CalcDumpWith(const Triangle *collider) const
 {
     Vector2D vec = collider->CalcDumpWith(this);
     return vec * -1;

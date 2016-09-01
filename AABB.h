@@ -3,10 +3,9 @@
 #include <vector>
 
 /*
-    X軸とY軸に平行な矩形の衝突判定領域
+X軸とY軸に平行な矩形の衝突判定領域
 */
 
-class Circle;
 
 class AABB : public ColliderShape
 {
@@ -25,6 +24,7 @@ public:
     virtual bool CollisionDetection(const AABB *collider) const override;
     virtual bool CollisionDetection(const OBB *collider) const override;
     virtual bool CollisionDetection(const Capsule *collider) const override;
+    virtual bool CollisionDetection(const Triangle *collider) const override;
     virtual bool CollisionDetection(const ConvexHull *collider) const override;
 
     //他の衝突判定領域とどのように交差しているか
@@ -33,6 +33,7 @@ public:
     virtual Vector2D CalcDumpWith(const AABB *collider) const override;
     virtual Vector2D CalcDumpWith(const OBB *collider) const override;
     virtual Vector2D CalcDumpWith(const Capsule *collider) const override;
+    virtual Vector2D CalcDumpWith(const Triangle *collider) const override;
     virtual Vector2D CalcDumpWith(const ConvexHull *collider) const override;
 
     Vector2D GetCenter() const override;

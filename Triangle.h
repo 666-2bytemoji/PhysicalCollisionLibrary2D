@@ -1,12 +1,12 @@
 #pragma once
-#include <vector>
 #include "ColliderShape.h"
+#include <array>
 
-class ConvexHull : public ColliderShape
+class Triangle : public ColliderShape
 {
 public:
-    ConvexHull(std::vector<Vector2D> points);
-    ~ConvexHull();
+    Triangle(Vector2D *vertexA, Vector2D *vertexB, Vector2D *vertexC);
+    ~Triangle();
 
     double GetMinX() const override;
     double GetMaxX() const override;
@@ -32,18 +32,14 @@ public:
     virtual Vector2D CalcDumpWith(const Triangle *collider) const override;
     virtual Vector2D CalcDumpWith(const ConvexHull *collider) const override;
 
-    void SetScale(const Vector2D scale) override;
-
     void Draw() override;
-
-    //ì_åQÇ©ÇÁì ïÔÇê∂ê¨
-    static std::vector<Vector2D> MakeConvexHullShape(std::vector<Vector2D> vertexes);
+    std::array<Vector2D*, 3> GetVertexes() const { return _vertexes; };
 
 private:
 
-    void MakeConvexHull(std::vector<Vector2D> vertexes);
+    Vector2D *_vertexA, *_vertexB, *_vertexC;
+    std::array<Vector2D*, 3> _vertexes;
 
-    std::vector<Vector2D> _vertexes;
-
+    mutable Vector2D _closestCache;
 };
 

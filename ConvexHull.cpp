@@ -3,6 +3,7 @@
 #include "Circle.h"
 #include "OBB.h"
 #include "Capsule.h"
+#include "Triangle.h"
 #include "Geometric.h"
 
 ConvexHull::ConvexHull(std::vector<Vector2D> points)
@@ -149,6 +150,12 @@ bool ConvexHull::CollisionDetection(const Capsule *collider) const
 }
 
 
+bool ConvexHull::CollisionDetection(const Triangle *collider) const
+{
+    return false;
+}
+
+
 bool ConvexHull::CollisionDetection(const ConvexHull *collider) const
 {
     return false;
@@ -180,6 +187,12 @@ Vector2D ConvexHull::CalcDumpWith(const OBB *collider) const
 
 
 Vector2D ConvexHull::CalcDumpWith(const Capsule *collider) const
+{
+    return Vector2D::zero;
+}
+
+
+Vector2D ConvexHull::CalcDumpWith(const Triangle *collider) const
 {
     return Vector2D::zero;
 }

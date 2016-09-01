@@ -217,6 +217,12 @@ bool Capsule::CollisionDetection(const Capsule *collider) const
 }
 
 
+bool Capsule::CollisionDetection(const Triangle *collider) const
+{
+    return false;
+}
+
+
 bool Capsule::CollisionDetection(const ConvexHull *collider) const
 {
     return false;
@@ -273,6 +279,12 @@ Vector2D Capsule::CalcDumpWith(const Capsule *collider) const
     double ratio = (abs(_radius + collider->_radius) - length) / length;
 
     return Vector2D(_closestCache._x * ratio, _closestCache._y * ratio);
+}
+
+
+Vector2D Capsule::CalcDumpWith(const Triangle *collider) const
+{
+    return Vector2D::zero;
 }
 
 

@@ -3,6 +3,7 @@
 #include "AABB.h"
 #include "OBB.h"
 #include "Capsule.h"
+#include "Triangle.h"
 #include "ConvexHull.h"
 #include "ColliderShape.h"
 
@@ -115,6 +116,38 @@ void Capsule::Draw()
         , static_cast<int>(edgeB._y - vertical._y)
         , static_cast<int>(edgeA._x - vertical._x)
         , static_cast<int>(edgeA._y - vertical._y)
+        , static_cast<int>(GetColor(red, 0x00, 0x00))
+        , false);
+}
+
+
+void Triangle::Draw()
+{
+    auto vertexes = GetVertexes();
+
+    auto red = _isCrossed ? 0xff : 0x00;
+
+    DrawLine(
+        static_cast<int>(vertexes[0]->_x)
+        , static_cast<int>(vertexes[0]->_y)
+        , static_cast<int>(vertexes[1]->_x)
+        , static_cast<int>(vertexes[1]->_y)
+        , static_cast<int>(GetColor(red, 0x00, 0x00))
+        , false);
+
+    DrawLine(
+        static_cast<int>(vertexes[1]->_x)
+        , static_cast<int>(vertexes[1]->_y)
+        , static_cast<int>(vertexes[2]->_x)
+        , static_cast<int>(vertexes[2]->_y)
+        , static_cast<int>(GetColor(red, 0x00, 0x00))
+        , false);
+
+    DrawLine(
+        static_cast<int>(vertexes[2]->_x)
+        , static_cast<int>(vertexes[2]->_y)
+        , static_cast<int>(vertexes[0]->_x)
+        , static_cast<int>(vertexes[0]->_y)
         , static_cast<int>(GetColor(red, 0x00, 0x00))
         , false);
 }
