@@ -56,8 +56,8 @@ void CollisionManager::TestAllCollision()
     {
         auto colA = col.first->_shape;
         auto colB = col.second->_shape;
-        auto bodyA = col.first->_rigidbody;
-        auto bodyB = col.second->_rigidbody;
+        auto bodyA = col.first->_physicalbody;
+        auto bodyB = col.second->_physicalbody;
 
         //仮移動
         bodyA->Integrate();
@@ -95,8 +95,8 @@ void CollisionManager::TestAllCollision()
     //衝突リスト中のペアが本当に衝突するかチェック
     auto colA = _colliders[0]->_shape;
     auto colB = _colliders[1]->_shape;
-    auto bodyA = _colliders[0]->_rigidbody;
-    auto bodyB = _colliders[1]->_rigidbody;
+    auto bodyA = _colliders[0]->_physicalbody;
+    auto bodyB = _colliders[1]->_physicalbody;
 
     //仮移動
     bodyA->Integrate();

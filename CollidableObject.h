@@ -7,16 +7,16 @@
 class CollidableObject
 {
 public:
-    CollidableObject(Vector2D pos, ColliderShape* shape, Rigidbody *rigidbody);
+    CollidableObject(Vector2D pos, ColliderShape* shape, Physicalbody *rigidbody);
     ~CollidableObject();
 
     void AddAction(std::function<void()> action);
     virtual void Update();
 
     void SetPosition(Vector2D pos) { _position = pos; }
-    void SetMove(Vector2D move) { _collider._rigidbody->_move = move; }
+    void SetMove(Vector2D move) { _collider._physicalbody->_move = move; }
 
-    void Inegrate() { _collider._rigidbody->Integrate(); }
+    void Inegrate() { _collider._physicalbody->Integrate(); }
     void ResetOnFrame();
 
 protected:

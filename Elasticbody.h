@@ -1,12 +1,13 @@
 #pragma once
 #include "Physicalbody.h"
 #include "Vector2D.h"
+#include <vector>
 
-class Rigidbody : public  Physicalbody
+class Elasticbody : public Physicalbody
 {
 public:
-    Rigidbody(Vector2D &center);
-    ~Rigidbody();
+    Elasticbody(std::vector<Vector2D *> &controlPoints);
+    ~Elasticbody();
 
     //Õ“Ë”»’èŒã‚ÌˆÊ’uˆÚ“®
     void Integrate() override;
@@ -14,8 +15,9 @@ public:
     //Œ»İ‚ÌˆÚ“®—Ê•ªAˆÊ’u‚ğ–ß‚·
     void CancelIntegrate() override;
 
+
 private:
 
-    Vector2D &_center;
+    std::vector<Vector2D *> &_controlPoints;
 };
 

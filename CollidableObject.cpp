@@ -1,7 +1,7 @@
 #include "CollidableObject.h"
 
 
-CollidableObject::CollidableObject(Vector2D pos, ColliderShape *shape, Rigidbody *rigidbody)
+CollidableObject::CollidableObject(Vector2D pos, ColliderShape *shape, Physicalbody *rigidbody)
     : _position(pos)
     , _collider(shape, rigidbody)
 {
@@ -21,7 +21,7 @@ void CollidableObject::AddAction(std::function<void()> action)
 
 void CollidableObject::ResetOnFrame()
 {
-    _collider._rigidbody->_move = Vector2D::zero;
+    _collider._physicalbody->_move = Vector2D::zero;
 }
 
 

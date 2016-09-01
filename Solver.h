@@ -11,6 +11,7 @@
 class Collider;
 class ColliderShape;
 class Rigidbody;
+class Elasticbody;
 
 class Solver
 {

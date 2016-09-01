@@ -1,9 +1,9 @@
 #include "Collider.h"
 #include "CollisionManager.h"
 
-Collider::Collider(ColliderShape *shape, Rigidbody *rigidbody)
+Collider::Collider(ColliderShape *shape, Physicalbody *rigidbody)
     : _shape(shape)
-    , _rigidbody(rigidbody)
+    , _physicalbody(rigidbody)
 {
     COLLISION_MGR->SetObjectToTree(this);
 }

@@ -23,8 +23,8 @@ void Solver::CalcDumpScale()
 
 void Solver::Solve()
 {
-    Rigidbody *physA = _collA->_rigidbody;
-    Rigidbody *physB = _collB->_rigidbody;
+    Physicalbody *physA = _collA->_physicalbody;
+    Physicalbody *physB = _collB->_physicalbody;
 
     physA->_move -= Vector2D(d * 0.5);
     physB->_move += Vector2D(d * 0.5);
