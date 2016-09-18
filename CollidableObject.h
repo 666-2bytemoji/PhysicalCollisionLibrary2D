@@ -8,7 +8,7 @@ class CollidableObject
 {
 public:
     CollidableObject(Vector2D pos, ColliderShape* shape, Physicalbody *rigidbody);
-    ~CollidableObject();
+    virtual ~CollidableObject();
 
     void AddAction(std::function<void()> action);
     virtual void Update();

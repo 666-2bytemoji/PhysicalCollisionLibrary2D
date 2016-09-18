@@ -13,7 +13,7 @@ class ColliderShape
 {
 public:
     ColliderShape(Vector2D *pivot, Vector2D size);
-    ~ColliderShape();
+    virtual ~ColliderShape();
 
     //Šg‘å—¦‚ğŠÜ‚ñ‚¾Õ“Ë”»’è‚ÌƒTƒCƒY‚ğ“¾‚é
     Vector2D GetSize() const

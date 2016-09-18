@@ -1,4 +1,5 @@
 #include "SpaceLinerTree.h"
+#include <typeinfo>
 
 SpaceLinerTree::SpaceLinerTree(double minX, double minY, double maxX, double maxY, unsigned int level)
 {
@@ -123,7 +124,10 @@ void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &
 
         //2.衝突スタックとの衝突リスト作成
         for (auto sub_obj : cols)
-            _allCollision.Write(otParent->obj, sub_obj);
+        {
+            if ( typeid(*sub_obj->_shape) != typeid(*otParent->obj->_shape) )
+                _allCollision.Write(otParent->obj, sub_obj);
+        }
 
         //次の親ノードへ
         otParent = otParent->next;

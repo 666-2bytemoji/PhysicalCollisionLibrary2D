@@ -11,6 +11,16 @@ Collider::Collider(ColliderShape *shape, Physicalbody *rigidbody)
 
 Collider::~Collider()
 {
+    if (_shape != nullptr)
+    {
+        delete _shape;
+        _shape = nullptr;
+    }
+    if (_physicalbody != nullptr)
+    {
+        delete _physicalbody;
+        _physicalbody = nullptr;
+    }
 }
 
 

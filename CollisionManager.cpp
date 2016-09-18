@@ -13,11 +13,16 @@ CollisionManager::~CollisionManager()
 {
     for (auto oft : _treeAgents)
     {
+        oft->RemoveFromLink();
         delete oft;
         oft = nullptr;
     }
 
     _treeAgents.clear();
+    _treeAgents.resize(0);
+
+    _colliders.resize(0);
+    _shapes.resize(0);
 }
 
 
@@ -90,44 +95,6 @@ void CollisionManager::TestAllCollision()
         solver.Solve();
         continue;
     }
-
-    /*
-    //衝突リスト中のペアが本当に衝突するかチェック
-    auto colA = _colliders[0]->_shape;
-    auto colB = _colliders[1]->_shape;
-    auto bodyA = _colliders[0]->_physicalbody;
-    auto bodyB = _colliders[1]->_physicalbody;
-
-    //仮移動
-    bodyA->Integrate();
-    bodyB->Integrate();
-
-    //衝突判定
-    bool result = CollisionDetection(colA, colB);
-    colA->_isCrossed = (result || colA->_isCrossed);
-    colB->_isCrossed = (result || colB->_isCrossed);
-
-    //当たっていたら、それぞれ相手と当たった時の処理をする
-    //objA->CollisionWith(*objB);
-    //objB->CollisionWith(*objA);
-
-    if (!result)
-    {
-        bodyA->CancelIntegrate();
-        bodyB->CancelIntegrate();
-        return;
-    }
-
-    //衝突応答オブジェクト作成
-    Solver solver(_colliders[1], _colliders[0]);
-
-    //仮移動を取り消して
-    bodyA->CancelIntegrate();
-    bodyB->CancelIntegrate();
-
-    //衝突応答処理
-    solver.Solve();
-    */
 }
 
 
