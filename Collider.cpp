@@ -1,9 +1,10 @@
 #include "Collider.h"
 #include "CollisionManager.h"
 
-Collider::Collider(ColliderShape *shape, Physicalbody *rigidbody)
+Collider::Collider(ColliderShape *shape, Physicalbody *rigidbody, CollidableObject *obj)
     : _shape(shape)
     , _physicalbody(rigidbody)
+    , _obj(obj)
 {
     COLLISION_MGR->SetObjectToTree(this);
 }
@@ -11,6 +12,8 @@ Collider::Collider(ColliderShape *shape, Physicalbody *rigidbody)
 
 Collider::~Collider()
 {
+    COLLISION_MGR->RemoveObject(this);
+    
     if (_shape != nullptr)
     {
         delete _shape;

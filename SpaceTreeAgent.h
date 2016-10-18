@@ -1,12 +1,11 @@
 #pragma once
-#include "DxLib.h"
 #include "SpaceCell.h"
 #include "Collider.h"
 
 class SpaceCell;
 class Collider;
 
-//ƒIƒuƒWƒFƒNƒg‚ÌƒcƒŠ[“o˜^‚ğ’S‚¤
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ„ãƒªãƒ¼ç™»éŒ²ã‚’æ‹…ã†
 class SpaceTreeAgent
 {
 public:
@@ -16,16 +15,16 @@ public:
     bool RemoveFromLink();
 
 
-    //©g‚Ì“o˜^‹óŠÔ
+    //è‡ªèº«ã®ç™»éŒ²ç©ºé–“
     SpaceCell *cell;
 
-    //©g‚Ì“–‚è”»’è
+    //è‡ªèº«ã®å½“ã‚Šåˆ¤å®š
     Collider *obj;
 
-    //Õ“ËƒŠƒXƒg‚ÌA‘OŒã‚ÌƒIƒuƒWƒFƒNƒg‚ğ‚ÂŠiq‚Ö‚Ì‘o•ûŒüƒŠƒ“ƒN
+    //è¡çªãƒªã‚¹ãƒˆã®ã€å‰å¾Œã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æŒã¤æ ¼å­ã¸ã®åŒæ–¹å‘ãƒªãƒ³ã‚¯
     SpaceTreeAgent *next, *prev;
 
-    //üŒ^l•ª–Ø‚ÌƒCƒ“ƒfƒbƒNƒX
+    //ç·šå‹å››åˆ†æœ¨ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
     int index;
 
 

@@ -1,8 +1,9 @@
 #include "Elasticbody.h"
 
 
-Elasticbody::Elasticbody(std::vector<Vector2D *> &controlPoints)
-    : _controlPoints(controlPoints)
+Elasticbody::Elasticbody(std::vector<Vector2D *> &controlPoints, long mass)
+    : Physicalbody(mass)
+    , _controlPoints(controlPoints)
 {
 }
 
@@ -12,17 +13,23 @@ Elasticbody::~Elasticbody()
 }
 
 
-//Õ“Ë”»’èŒã‚ÌˆÊ’uˆÚ“®
+//è¡çªåˆ¤å®šå¾Œã®ä½ç½®ç§»å‹•
 void Elasticbody::Integrate()
 {
+    if (!IsMovable())
+        return;
+
     for (auto pos : _controlPoints)
         *pos += _move;
 }
 
 
-//Œ»İ‚ÌˆÚ“®—Ê•ªAˆÊ’u‚ğ–ß‚·
+//ç¾åœ¨ã®ç§»å‹•é‡åˆ†ã€ä½ç½®ã‚’æˆ»ã™
 void Elasticbody::CancelIntegrate()
 {
+    if (!IsMovable())
+        return;
+
     for (auto pos : _controlPoints)
         *pos -= _move;
 }

@@ -21,16 +21,16 @@ ConvexHull::~ConvexHull()
 
 void ConvexHull::MakeConvexHull(std::vector<Vector2D> vertexes)
 {
-    //“Ê•ï‚ğì‚Á‚Ä
+    //å‡¸åŒ…ã‚’ä½œã£ã¦
     _vertexes = MakeConvexHullShape(vertexes);
 
     /*
-//dS‚ğo‚·
-    //¶¬‚·‚éOŠpŒ`‚Ì3“_
+//é‡å¿ƒã‚’å‡ºã™
+    //ç”Ÿæˆã™ã‚‹ä¸‰è§’å½¢ã®3ç‚¹
     Vector2D sPt, iPt, ePt;
-    //2”Ô–Ú‚ÌƒCƒ“ƒfƒbƒNƒX
+    //2ç•ªç›®ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
     size_t i_idx;
-    //3”Ô–Ú
+    //3ç•ªç›®
     size_t e_idx;
 
     for (size_t s_idx = 0; s_idx < _vertexes.size(); ++s_idx)
@@ -38,14 +38,14 @@ void ConvexHull::MakeConvexHull(std::vector<Vector2D> vertexes)
         i_idx = s_idx + 1;
         e_idx = s_idx + 2;
 
-        //‘S‚Ä‚ÌdS‚ğo‚·
+        //å…¨ã¦ã®é‡å¿ƒã‚’å‡ºã™
         sPt = vertex[s_idx];
         iPt = vertex[i_idx];
         ePt = vertex[e_idx];
 
         _vertexes.push_back( std::move(MakeCentPt(sPt, iPt, ePt)) );
 
-        //ÅŒã‚ÉA3”Ô–Ú‚Ì“_‚ª“Ê•ï‚ÌÅŒã‚Ì“_‚É’…‚¢‚½‚çI—¹
+        //æœ€å¾Œã«ã€3ç•ªç›®ã®ç‚¹ãŒå‡¸åŒ…ã®æœ€å¾Œã®ç‚¹ã«ç€ã„ãŸã‚‰çµ‚äº†
         if (e_idx == vertex.size() - 1)
             break;
     }
@@ -210,7 +210,7 @@ void ConvexHull::SetScale(const Vector2D scale)
 }
 
 
-//“_ŒQ‚©‚ç“Ê•ï‚ğ¶¬
+//ç‚¹ç¾¤ã‹ã‚‰å‡¸åŒ…ã‚’ç”Ÿæˆ
 std::vector<Vector2D> ConvexHull::MakeConvexHullShape(std::vector<Vector2D> vertexes)
 {
     return std::move(vertexes);

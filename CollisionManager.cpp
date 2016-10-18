@@ -1,28 +1,32 @@
 #include "CollisionManager.h"
+#include "CollidableObject.h"
 #include "Solver.h"
 
 
 CollisionManager::CollisionManager()
-    : _spaceTree(-3000, -3000, 3000, 3000, 4)
+    : _spaceTree(-1500, -1500, 1500, 1500, 8)
 {
-    _treeAgents.reserve(1024);
+    _treeAgents._objects.reserve(1024);
 }
 
 
 CollisionManager::~CollisionManager()
 {
-    for (auto oft : _treeAgents)
+    Clear();
+}
+
+
+void CollisionManager::Clear()
+{
+    for (auto oft : _treeAgents._objects)
     {
         oft->RemoveFromLink();
         delete oft;
         oft = nullptr;
     }
 
-    _treeAgents.clear();
-    _treeAgents.resize(0);
-
-    _colliders.resize(0);
-    _shapes.resize(0);
+    _treeAgents.Clear();
+    _colliders.Clear();
 }
 
 
@@ -31,19 +35,39 @@ void CollisionManager::SetObjectToTree(Collider *collider)
     if (collider->_shape == nullptr)
         return;
 
-    _treeAgents.push_back(new SpaceTreeAgent(collider, _treeAgents.size()));
-    _colliders.push_back(collider);
-    _shapes.push_back(collider->_shape);
+    _treeAgents.Add(new SpaceTreeAgent(collider, _treeAgents._objects.size()));
+    _colliders.Add(collider);
+}
+
+
+void CollisionManager::RemoveObject(Collider *collider)
+{
+    if (collider->_shape == nullptr)
+        return;
+    
+    for(size_t i=0; i< _treeAgents._objects.size(); ++i)
+    {
+        if (_treeAgents._objects[i]->obj->_shape == collider->_shape)
+        {
+            _treeAgents.Remove(_treeAgents._objects[i]);
+            _treeAgents._objects[i]->RemoveFromLink();
+        }
+    }
+    
+    _colliders.Remove(collider);
 }
 
 
 void CollisionManager::UpdateTree()
 {
-    for (auto agent : _treeAgents)
+    _colliders.Update();
+    _treeAgents.Update();
+    
+    for (auto agent : _treeAgents._objects)
     {
-        //ˆê’UƒŠƒXƒg‚©‚çŠO‚µ‚Ä
+        //ç©ºé–“åˆ†å‰²æœ¨ã®æŽ¥ç¶šã‚’ä¸€æ—¦è§£é™¤ã—ã¦
         agent->RemoveFromLink();
-        //Ä“o˜^‚·‚é
+        //å†æ§‹ç¯‰
         _spaceTree.RegistColliderShape(agent);
 
         agent->obj->_shape->_isCrossed = false;
@@ -53,30 +77,34 @@ void CollisionManager::UpdateTree()
 
 void CollisionManager::TestAllCollision()
 {
-    //•ªŠ„‚µ‚½‹óŠÔ‚ð‰ñ‚èÕ“ËƒŠƒXƒg‚ðì¬
+    //ç©ºé–“åˆ†å‰²æœ¨ã‚’æ§‹ç¯‰
     _spaceTree.SetColList();
 
-    //Õ“ËƒŠƒXƒg’†‚ÌƒyƒA‚ª–{“–‚ÉÕ“Ë‚·‚é‚©ƒ`ƒFƒbƒN
+    //ç©ºé–“åˆ†å‰²ã§è¡çªã—ã¦ã‚‹ã‹ã‚‚ã€ã¨åˆ¤æ–­ã•ã‚ŒãŸãƒšã‚¢ã ã‘åˆ¤å®š
     for (auto col : _spaceTree._allCollision.colVec)
     {
+        auto objA = col.first->_obj;
+        auto objB = col.second->_obj;
+
+        //è¡çªã—ãªã„ã‚¿ã‚¤ãƒ—ã©ã†ã—ã ã£ãŸã‚‰åˆ¤å®šã—ãªã„
+        if (!CollidableObject::IsCollidable(objA->GetType(), objB->GetType()))
+            continue;
+            
         auto colA = col.first->_shape;
         auto colB = col.second->_shape;
         auto bodyA = col.first->_physicalbody;
         auto bodyB = col.second->_physicalbody;
 
-        //‰¼ˆÚ“®
+        //ä»®ã©ã†ã—ã¦
         bodyA->Integrate();
         bodyB->Integrate();
 
-        //Õ“Ë”»’è
+        //è¡çªåˆ¤å®š
         bool result = CollisionDetection(colA, colB);
         colA->_isCrossed = (result || colA->_isCrossed);
         colB->_isCrossed = (result || colB->_isCrossed);
 
-        //“–‚½‚Á‚Ä‚¢‚½‚çA‚»‚ê‚¼‚ê‘ŠŽè‚Æ“–‚½‚Á‚½Žž‚Ìˆ—‚ð‚·‚é
-        //objA->CollisionWith(*objB);
-        //objB->CollisionWith(*objA);
-
+        //å½“ãŸã£ã¦ãªã‘ã‚Œã°ä»®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦çµ‚äº†
         if (!result)
         {
             bodyA->CancelIntegrate();
@@ -84,14 +112,28 @@ void CollisionManager::TestAllCollision()
             continue;
         }
 
-        //Õ“Ë‰ž“šƒIƒuƒWƒFƒNƒgì¬
+        //è¡çªåˆ¤å®šã®ã¿è¡Œã†è¨­å®šãªã‚‰ã€æŽ¥è§¦æ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã¦çµ‚äº†
+        if (colA->_isDetectionOnly || colB->_isDetectionOnly)
+        {
+            objA->ContactWith(*objB);
+            objB->ContactWith(*objA);
+            bodyA->CancelIntegrate();
+            bodyB->CancelIntegrate();
+            continue;
+        }
+
+        //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã®äº¤å·®ã‚’è§£æ¶ˆã™ã‚‹è¨­å®šã‚’ã™ã‚‹
         Solver solver(col.first, col.second);
 
-        //‰¼ˆÚ“®‚ðŽæ‚èÁ‚µ‚Ä
+        //è¡çªã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹
+        objA->CollisionWith(*objB, solver);
+        objB->CollisionWith(*objA, solver);
+
+        //ä»®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹
         bodyA->CancelIntegrate();
         bodyB->CancelIntegrate();
 
-        //Õ“Ë‰ž“šˆ—
+        //äº¤å·®ã—ãŸåˆ†ã‚’è§£æ¶ˆã™ã‚‹ã‚ˆã†ã«ç§»å‹•é‡ã‚’ã•ã‚‰ã«åŠ ãˆã‚‹
         solver.Solve();
         continue;
     }
@@ -106,12 +148,12 @@ bool CollisionManager::CollisionDetection(ColliderShape *colA, ColliderShape *co
 
 void CollisionManager::Debug()
 {
-    for (auto shape : _shapes)
+    for (auto collider : _colliders._objects)
     {
-        shape->Draw();
-        shape->DrawAABB();
+        collider->_shape->Draw();
+        collider->_shape->DrawAABB();
     }
-    for (auto agent : _treeAgents)
+    for (auto agent : _treeAgents._objects)
     {
         agent->Debug();
     }

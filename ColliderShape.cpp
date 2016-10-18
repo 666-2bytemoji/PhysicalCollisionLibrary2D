@@ -5,6 +5,7 @@ ColliderShape::ColliderShape(Vector2D *center, Vector2D size)
     , _baseSize(size)
     , _scale(1, 1)
     , _isCrossed(false)
+    , _isDetectionOnly(false)
 {
     //CollisionManager::Regist(obj, this);
 }

@@ -15,7 +15,7 @@ public:
     double GetMaxY() const override;
     Vector2D GetCenter() const override;
 
-    //‘¼‚ÌÕ“Ë”»’è—Ìˆæ‚ÆŒğ·‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    //ä»–ã®è¡çªåˆ¤å®šé ˜åŸŸã¨äº¤å·®ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
     virtual bool CollisionWith(const ColliderShape *collider) const override;
     virtual bool CollisionDetection(const Circle *collider) const override;
     virtual bool CollisionDetection(const AABB *collider) const override;
@@ -24,7 +24,7 @@ public:
     virtual bool CollisionDetection(const Triangle *collider) const override;
     virtual bool CollisionDetection(const ConvexHull *collider) const override;
 
-    //‘¼‚ÌÕ“Ë”»’è—Ìˆæ‚Æ‚Ç‚Ì‚æ‚¤‚ÉŒğ·‚µ‚Ä‚¢‚é‚©
+    //ä»–ã®è¡çªåˆ¤å®šé ˜åŸŸã¨ã©ã®ã‚ˆã†ã«äº¤å·®ã—ã¦ã„ã‚‹ã‹
     virtual Vector2D CalcDump(const ColliderShape *collider) const override;
     virtual Vector2D CalcDumpWith(const Circle *collider) const override;
     virtual Vector2D CalcDumpWith(const AABB *collider) const override;
@@ -36,13 +36,14 @@ public:
     void SetScale(const Vector2D scale) override;
     void Draw() override;
 
-    //OBB‚ğ‰ñ“]‚³‚¹‚é(“x”w’è)
+    //OBBã‚’å›è»¢ã•ã›ã‚‹(åº¦æ•°æŒ‡å®š)
     void Rotate(double angle);
+    void LookAt(Vector2D dir);
 
     double SqDistFromPoint(const Vector2D point) const;
-    Vector2D OBB::GetClosestPoint(const Vector2D point) const;
+    Vector2D GetClosestPoint(const Vector2D point) const;
 
-    //’¸“_‚Ì”z—ñ‚ğæ“¾
+    //é ‚ç‚¹ã®é…åˆ—ã‚’å–å¾—
     std::vector<Vector2D> GetVertexes() const;
 
     bool Contain(Vector2D point) const;

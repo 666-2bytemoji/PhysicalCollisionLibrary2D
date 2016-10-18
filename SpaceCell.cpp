@@ -13,7 +13,7 @@ SpaceCell::~SpaceCell()
 
 bool SpaceCell::Push(SpaceTreeAgent* ot, int key)
 {
-    //null‚Ì“o˜^, Ž©g‚Ì“ñd“o˜^‚ð–h‚®
+    //nullã®ç™»éŒ², è‡ªèº«ã®äºŒé‡ç™»éŒ²ã‚’é˜²ã
     if (ot == nullptr)
         return false;
     if (ot->cell == this)
@@ -25,7 +25,7 @@ bool SpaceCell::Push(SpaceTreeAgent* ot, int key)
     }
     else
     {
-        //eƒm[ƒh‚ðXV
+        //è¦ªãƒŽãƒ¼ãƒ‰ã‚’æ›´æ–°
         ot->next = parantNode;
         parantNode->prev = ot;
         parantNode = ot;
@@ -41,12 +41,12 @@ void SpaceCell::Pop(SpaceTreeAgent* ot)
     if (ot == nullptr)
         return;
 
-    //ƒŠƒXƒg‚©‚ç—£’EAƒŠƒ“ƒN‚ÌŽŸ‚ÌƒIƒuƒWƒFƒNƒg‚É‚·‚°‘Ö‚¦
+    //ãƒªã‚¹ãƒˆã‹ã‚‰é›¢è„±ã€ãƒªãƒ³ã‚¯ã®æ¬¡ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã™ã’æ›¿ãˆ
     if (parantNode == ot)
         parantNode = parantNode->next;
 }
 
-//ƒŠƒ“ƒN‚ð’H‚Á‚Änullptr‚ðÝ’è‚µ‚Ä‚¢‚­
+//ãƒªãƒ³ã‚¯ã‚’è¾¿ã£ã¦nullptrã‚’è¨­å®šã—ã¦ã„ã
 void SpaceCell::ResetLink(SpaceTreeAgent* ot)
 {
     if (ot->next != nullptr){

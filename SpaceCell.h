@@ -1,8 +1,8 @@
 #pragma once
 #include "SpaceTreeAgent.h"
 
-//ƒOƒŠƒbƒh(Šiq)ƒNƒ‰ƒX
-//eƒm[ƒh‚ğ‚¿Aƒm[ƒh‚ª’H‚éƒ‹[ƒg‚ğŠÇ—‚·‚é
+//ã‚°ãƒªãƒƒãƒ‰(æ ¼å­)ã‚¯ãƒ©ã‚¹
+//è¦ªãƒãƒ¼ãƒ‰ã‚’æŒã¡ã€ãƒãƒ¼ãƒ‰ãŒè¾¿ã‚‹ãƒ«ãƒ¼ãƒˆã‚’ç®¡ç†ã™ã‚‹
 
 class SpaceTreeAgent;
 
@@ -17,10 +17,10 @@ public:
     virtual ~SpaceCell();
 
 
-    //‹óŠÔ‚ªeƒm[ƒh‚ğ•Û‚·‚é
+    //ç©ºé–“ãŒè¦ªãƒãƒ¼ãƒ‰ã‚’ä¿æŒã™ã‚‹
     SpaceTreeAgent *parantNode;
     SpaceTreeAgent *GetParentNode();
 
-    //ƒ‚[ƒgƒ“”Ô†
+    //ãƒ¢ãƒ¼ãƒˆãƒ³ç•ªå·
     int mKey;
 };

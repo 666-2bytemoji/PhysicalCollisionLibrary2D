@@ -1,4 +1,3 @@
-#include "DxLib.h"
 #include "Circle.h"
 #include "AABB.h"
 #include "OBB.h"
@@ -6,185 +5,107 @@
 #include "Triangle.h"
 #include "ConvexHull.h"
 #include "ColliderShape.h"
+#include "../DebugDraw.h"
 
 
 void Circle::Draw()
 {
-    auto red = _isCrossed ? 0xff : 0x00;
-
-    DrawCircle(
-        static_cast<int>(_center->_x)
-        , static_cast<int>(_center->_y)
-        , static_cast<int>(_radius)
-        , GetColor(red, 0x00, 0x00)
-        , false);
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
+    DrawCircle(*_center, _radius, color, false);
 }
 
 
 void AABB::Draw()
 {
-    auto red = _isCrossed ? 0xff : 0x00;
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
 
-    DrawBox(
-        static_cast<int>(GetMinX())
-        , static_cast<int>(GetMinY())
-        , static_cast<int>(GetMaxX())
-        , static_cast<int>(GetMaxY())
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
+    DrawRectWithPoint(
+        static_cast<float>(GetMinX())
+        , static_cast<float>(GetMinY())
+        , static_cast<float>(GetMaxX())
+        , static_cast<float>(GetMaxY())
+        , color
         , false);
 
-    DrawCircle(static_cast<int>(_center->_x), static_cast<int>(_center->_y), 3, GetColor(red, 0x00, 0x00), true);
+    DrawCircle(*_center, 3, color, true);
 }
 
 
 void OBB::Draw()
 {
-    auto red = _isCrossed ? 0xff : 0x00;
-
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
     auto vertexes = GetVertexes();
 
-    DrawLine(
-        static_cast<int>(vertexes[0]._x)
-        , static_cast<int>(vertexes[0]._y)
-        , static_cast<int>(vertexes[1]._x)
-        , static_cast<int>(vertexes[1]._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
+    DrawLine(vertexes[0], vertexes[1], color);
+    DrawLine(vertexes[1], vertexes[2], color);
+    DrawLine(vertexes[2], vertexes[3], color);
+    DrawLine(vertexes[3], vertexes[0], color);
 
-    DrawLine(
-        static_cast<int>(vertexes[1]._x)
-        , static_cast<int>(vertexes[1]._y)
-        , static_cast<int>(vertexes[2]._x)
-        , static_cast<int>(vertexes[2]._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
-
-    DrawLine(
-        static_cast<int>(vertexes[2]._x)
-        , static_cast<int>(vertexes[2]._y)
-        , static_cast<int>(vertexes[3]._x)
-        , static_cast<int>(vertexes[3]._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
-
-    DrawLine(
-        static_cast<int>(vertexes[3]._x)
-        , static_cast<int>(vertexes[3]._y)
-        , static_cast<int>(vertexes[0]._x)
-        , static_cast<int>(vertexes[0]._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
-
-    DrawCircle(static_cast<int>(_center->_x), static_cast<int>(_center->_y), 3, GetColor(red, 0x00, 0x00), true);
+    DrawLine(*_center, *_center + _elemWidth, color);
+    DrawLine(*_center, *_center + _elemHeight, color);
+    
+    DrawCircle(*_center, 3, color, true);
 }
 
 
 void Capsule::Draw()
 {
-    auto red = _isCrossed ? 0xff : 0x00;
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
 
     auto edgeA = GetEdgeA();
     auto edgeB = GetEdgeB();
 
-    DrawCircle(
-        static_cast<int>(edgeA._x)
-        , static_cast<int>(edgeA._y)
-        , static_cast<int>(_radius)
-        , GetColor(red, 0x00, 0x00)
-        , false);
-
-    DrawCircle(
-        static_cast<int>(edgeB._x)
-        , static_cast<int>(edgeB._y)
-        , static_cast<int>(_radius)
-        , GetColor(red, 0x00, 0x00)
-        , false);
+    DrawCircle(edgeA, _radius, color, false);
+    DrawCircle(edgeB, _radius, color, false);
 
     Vector2D vertical = _direction;
     vertical.Rotate(90);
     vertical *= _radius / vertical.GetLength();
 
-    DrawLine(
-        static_cast<int>(edgeB._x + vertical._x)
-        , static_cast<int>(edgeB._y + vertical._y)
-        , static_cast<int>(edgeA._x + vertical._x)
-        , static_cast<int>(edgeA._y + vertical._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
-    DrawLine(
-        static_cast<int>(edgeB._x - vertical._x)
-        , static_cast<int>(edgeB._y - vertical._y)
-        , static_cast<int>(edgeA._x - vertical._x)
-        , static_cast<int>(edgeA._y - vertical._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
+    DrawLine(edgeB + vertical
+             , edgeA + vertical
+             , color);
+    DrawLine(edgeB - vertical
+             , edgeA - vertical
+             , color);
+    
 }
 
 
 void Triangle::Draw()
 {
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
     auto vertexes = GetVertexes();
-
-    auto red = _isCrossed ? 0xff : 0x00;
-
-    DrawLine(
-        static_cast<int>(vertexes[0]->_x)
-        , static_cast<int>(vertexes[0]->_y)
-        , static_cast<int>(vertexes[1]->_x)
-        , static_cast<int>(vertexes[1]->_y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
-
-    DrawLine(
-        static_cast<int>(vertexes[1]->_x)
-        , static_cast<int>(vertexes[1]->_y)
-        , static_cast<int>(vertexes[2]->_x)
-        , static_cast<int>(vertexes[2]->_y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
-
-    DrawLine(
-        static_cast<int>(vertexes[2]->_x)
-        , static_cast<int>(vertexes[2]->_y)
-        , static_cast<int>(vertexes[0]->_x)
-        , static_cast<int>(vertexes[0]->_y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
+    
+    DrawLine(*vertexes[0], *vertexes[1], color);
+    DrawLine(*vertexes[1], *vertexes[2], color);
+    DrawLine(*vertexes[2], *vertexes[3], color);
 }
 
 
 void ConvexHull::Draw()
 {
-    auto red = _isCrossed ? 0xff : 0x00;
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
 
-    DrawLine(
-        static_cast<int>( (_vertexes.end() - 1)->_x )
-        , static_cast<int>((_vertexes.end() - 1)->_y)
-        , static_cast<int>(_vertexes[0]._x)
-        , static_cast<int>(_vertexes[0]._y)
-        , static_cast<int>(GetColor(red, 0x00, 0x00))
-        , false);
+    DrawLine( *(_vertexes.end() - 1), _vertexes[0], color);
 
     for (size_t i = 1; i < _vertexes.size(); ++i)
     {
-        DrawLine(
-            static_cast<int>(_vertexes[i-1]._x)
-            , static_cast<int>(_vertexes[i-1]._y)
-            , static_cast<int>(_vertexes[i]._x)
-            , static_cast<int>(_vertexes[i]._y)
-            , static_cast<int>(GetColor(red, 0x00, 0x00))
-            , false);
+        DrawLine(_vertexes[i-1], _vertexes[i], color);
     }
 }
 
 
 void ColliderShape::DrawAABB()
 {
-    DrawBox(
+    auto color = _isCrossed ? ColorPalette::RED4 : ColorPalette::BLACK4;
+    
+    DrawRectWithPoint(
         static_cast<int>(GetMinX())
         , static_cast<int>(GetMinY())
         , static_cast<int>(GetMaxX())
         , static_cast<int>(GetMaxY())
-        , static_cast<int>(GetColor(0xff, 0x00, 0xff))
-        , false);
+        , color
+        , false
+        );
 }

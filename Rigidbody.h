@@ -5,13 +5,13 @@
 class Rigidbody : public  Physicalbody
 {
 public:
-    Rigidbody(Vector2D &center);
+    Rigidbody(Vector2D &center, long mass = 1);
     ~Rigidbody();
 
-    //Õ“Ë”»’èŒã‚ÌˆÊ’uˆÚ“®
+    //è¡çªåˆ¤å®šå¾Œã®ä½ç½®ç§»å‹•
     void Integrate() override;
 
-    //Œ»İ‚ÌˆÚ“®—Ê•ªAˆÊ’u‚ğ–ß‚·
+    //ç¾åœ¨ã®ç§»å‹•é‡åˆ†ã€ä½ç½®ã‚’æˆ»ã™
     void CancelIntegrate() override;
 
 private:

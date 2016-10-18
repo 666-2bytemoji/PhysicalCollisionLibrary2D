@@ -6,8 +6,6 @@
 #include "ConvexHull.h"
 #include "Geometric.h"
 
-#include "DxLib.h"
-
 
 OBB::OBB(Vector2D *pos, double width, double height, double angle)
     : ColliderShape(pos, Vector2D(width, height))
@@ -35,7 +33,7 @@ double OBB::GetMinX() const
     double wX = _elemWidth._x;
     double hX = _elemHeight._x;
 
-    double minX = - abs(wX) - abs(hX);
+    double minX = - fabs(wX) - fabs(hX);
     return _center->_x + minX;
 }
 
@@ -45,7 +43,7 @@ double OBB::GetMaxX() const
     double wX = _elemWidth._x;
     double hX = _elemHeight._x;
 
-    double maxX = abs(wX) + abs(hX);
+    double maxX = fabs(wX) + fabs(hX);
     return _center->_x + maxX;
 }
 
@@ -55,7 +53,7 @@ double OBB::GetMinY() const
     double wY = _elemWidth._y;
     double hY = _elemHeight._y;
 
-    double minY = - abs(wY) - abs(hY);
+    double minY = - fabs(wY) - fabs(hY);
     return _center->_y + minY;
 }
 
@@ -65,7 +63,7 @@ double OBB::GetMaxY() const
     double wY = _elemWidth._y;
     double hY = _elemHeight._y;
 
-    double maxY = abs(wY) + abs(hY);
+    double maxY = fabs(wY) + fabs(hY);
     return _center->_y + maxY;
 }
 
@@ -103,13 +101,13 @@ bool OBB::CollisionDetection(const OBB *collider) const
     double L = 0;
 
     //分離軸Be2
-    radA = abs(Vector2D::Dot(_elemWidth, collider->_elemHeight))
-        + abs(Vector2D::Dot(_elemHeight, collider->_elemHeight));
+    radA = fabs(Vector2D::Dot(_elemWidth, collider->_elemHeight))
+        + fabs(Vector2D::Dot(_elemHeight, collider->_elemHeight));
 
     radB = Vector2D::Dot(collider->_elemHeight, collider->_elemHeight);
 
     //(PlayerとSloopの距離をベクトルで得る)・sloop->e2
-    L = abs((_center->_x - collider->_center->_x) * collider->_elemHeight._x
+    L = fabs((_center->_x - collider->_center->_x) * collider->_elemHeight._x
         +   (_center->_y - collider->_center->_y) * collider->_elemHeight._y);
 
     //2つの投影距離の和が距離の投影線より長いと当たってない
@@ -118,13 +116,13 @@ bool OBB::CollisionDetection(const OBB *collider) const
 
 
     //分離軸Be1
-    radA = abs(Vector2D::Dot(_elemWidth, collider->_elemWidth))
-        + abs(Vector2D::Dot(_elemHeight, collider->_elemWidth));
+    radA = fabs(Vector2D::Dot(_elemWidth, collider->_elemWidth))
+        + fabs(Vector2D::Dot(_elemHeight, collider->_elemWidth));
 
     radB = Vector2D::Dot(collider->_elemWidth, collider->_elemWidth);
 
     //(PlayerとSloopの距離をベクトルで得る)・sloop->e1
-    L = abs((_center->_x - collider->_center->_x) * collider->_elemWidth._x
+    L = fabs((_center->_x - collider->_center->_x) * collider->_elemWidth._x
         +   (_center->_y - collider->_center->_y) * collider->_elemWidth._y);
 
     //お互いの分離軸長がお互いの中心の距離より小さいなら、当たった
@@ -133,13 +131,13 @@ bool OBB::CollisionDetection(const OBB *collider) const
 
 
     //分離軸Ae2
-    radB = abs(Vector2D::Dot(_elemHeight, collider->_elemHeight))
-        + abs(Vector2D::Dot(_elemHeight, collider->_elemWidth));
+    radB = fabs(Vector2D::Dot(_elemHeight, collider->_elemHeight))
+        + fabs(Vector2D::Dot(_elemHeight, collider->_elemWidth));
 
     radA = Vector2D::Dot(_elemHeight, _elemHeight);
 
     //(PlayerとSloopの距離をベクトルで得る)・obb1->e2
-    L = abs((_center->_x - collider->_center->_x) * _elemHeight._x
+    L = fabs((_center->_x - collider->_center->_x) * _elemHeight._x
         +   (_center->_y - collider->_center->_y) * _elemHeight._y);
 
     //お互いの分離軸長がお互いの中心の距離より小さいなら、当たった
@@ -148,13 +146,13 @@ bool OBB::CollisionDetection(const OBB *collider) const
     
 
 
-    radB = abs(Vector2D::Dot(_elemWidth, collider->_elemWidth))
-        + abs(Vector2D::Dot(_elemWidth, collider->_elemHeight));
+    radB = fabs(Vector2D::Dot(_elemWidth, collider->_elemWidth))
+        + fabs(Vector2D::Dot(_elemWidth, collider->_elemHeight));
 
     radA = Vector2D::Dot(_elemWidth, _elemWidth);
 
     //(PlayerとSloopの距離をベクトルで得る)・obb1->e2
-    L = abs((_center->_x - collider->_center->_x) * _elemWidth._x
+    L = fabs((_center->_x - collider->_center->_x) * _elemWidth._x
         +   (_center->_y - collider->_center->_y) * _elemWidth._y);
 
     //お互いの分離軸長がお互いの中心の距離より小さいなら、当たった
@@ -270,19 +268,19 @@ Vector2D OBB::CalcDumpWith(const OBB *collider) const
         double dotWidth = Vector2D::Dot(obbB->_elemWidth.GetNormalized(), vec);
         double dotHeight = Vector2D::Dot(obbB->_elemHeight.GetNormalized(), vec);
 
-        bool shooter = abs(dotWidth) < abs(dotHeight);
+        bool shooter = fabs(dotWidth) < fabs(dotHeight);
         Vector2D v = (shooter) ? obbB->_elemWidth.GetNormalized() : obbB->_elemHeight.GetNormalized();
 
         //複数交差した場合(平行 & 頂点が重なった場合)の検出
         /* TODO : closestペアで作るベクトルの大きさ(物体同士が早く動く場合)に対応 */
         //1. 中心点どうしのベクトル上に、最近接点のベクトルがあるか
-        double a = abs(Vector2D::Cross( (closestOnB - closestOnA).GetNormalized()
+        double a = fabs(Vector2D::Cross( (closestOnB - closestOnA).GetNormalized()
                                         , (*obbA->_center - *obbB->_center).GetNormalized()));
         double b = 0;
         if (a < 0.5)
         {
             //2. 弾きたい方向と中心点は直線状にあるか(重なってるなら直線状にあるはず)
-            b = abs(Vector2D::Cross(v, (*obbA->_center - *obbB->_center).GetNormalized()));
+            b = fabs(Vector2D::Cross(v, (*obbA->_center - *obbB->_center).GetNormalized()));
             if (1 - 0.01 < b)
                 shooter = !shooter;
         }
@@ -297,15 +295,6 @@ Vector2D OBB::CalcDumpWith(const OBB *collider) const
             v = obbB->_elemHeight.GetNormalized();
             v *= dotHeight;
         }
-
-        DrawFormatStringF(obbA->_center->_x, obbA->_center->_y, GetColor(0xff, 0x00, 0x00), "OBB_A");
-        DrawFormatStringF(obbB->_center->_x, obbB->_center->_y, GetColor(0x00, 0xbb, 0x00), "OBB_B");
-        DrawFormatStringF(0, 270, GetColor(0x00, 0xbb, 0x00), "a : %f", a);
-        DrawFormatStringF(0, 300, GetColor(0x00, 0xbb, 0x00), "b : %f", b);
-
-        DrawCircle(closestOnA._x, closestOnA._y, 3, GetColor(0xff, 0x00, 0x00), true);
-        DrawCircle(closestOnB._x, closestOnB._y, 3, GetColor(0x00, 0x00, 0xff), true);
-        DrawLine(closestOnA._x, closestOnA._y, closestOnB._x, closestOnB._y, GetColor(0x00, 0x00, 0x00));
 //        return Vector2D::zero;
 
         return v;
@@ -349,10 +338,6 @@ Vector2D OBB::CalcDumpWith(const OBB *collider) const
         vec.Normalize();
         vec *= -Vector2D::Dot(vec, (closest - contained[0]));
 
-        DrawCircle(closest._x, closest._y, 3, GetColor(0xff, 0x00, 0x00), true);
-        DrawCircle(contained[0]._x, contained[0]._y, 3, GetColor(0x00, 0x00, 0xff), true);
-        DrawLine(closest._x, closest._y,
-                 closest._x + vec._x, closest._y + vec._y, GetColor(0xff, 0x00, 0x00));
 //        return Vector2D::zero;
 
         return std::move(vec);
@@ -391,10 +376,6 @@ Vector2D OBB::CalcDumpWith(const OBB *collider) const
     //その点と最近接点を弾けばOK
     vec.Normalize();
     vec *= -Vector2D::Dot(vec, closest - support);
-
-    DrawCircle(closest._x, closest._y, 3, GetColor(0xff, 0x00, 0x00), true);
-    DrawCircle(support._x, support._y, 3, GetColor(0x00, 0x00, 0xff), true);
-    DrawLine(closest._x, closest._y, closest._x + vec._x, closest._y + vec._y, GetColor(0x00, 0x00, 0xff));
 //    return Vector2D::zero;
 
     //その点と最近接点を弾けばOK
@@ -507,6 +488,28 @@ Vector2D OBB::GetClosestPoint(const Vector2D point) const
     }
 
     return closest;
+}
+
+
+void OBB::Rotate(double angle)
+{
+    _elemWidth.Rotate(angle);
+    _elemHeight.Rotate(angle);
+}
+
+
+void OBB::LookAt(Vector2D dir)
+{
+    auto theta = 1 - fabs(Vector2D::Dot(dir.GetNormalized(), _elemHeight.GetNormalized()));
+
+    if (0 < Vector2D::Cross(dir.GetNormalized(), _elemHeight.GetNormalized()))
+    {
+        Rotate(theta * -180);
+    }
+    else
+    {
+        Rotate(theta * 180);
+    }
 }
 
 

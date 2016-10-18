@@ -65,11 +65,11 @@ bool Capsule::CollisionDetection(const Circle *collider) const
     auto edgeA = GetEdgeA();
     auto edgeB = GetEdgeB();
 
-    //ƒJƒvƒZƒ‹‚Ì²ã‚Æ‚ÌÅ‹ßÚ“_‚ª
+    //ã‚«ãƒ—ã‚»ãƒ«ã®è»¸ä¸Šã¨ã®æœ€è¿‘æ¥ç‚¹ãŒ
     auto closest = GetClosestPointSegmentToPoint(edgeA, edgeB, collider->GetCenter());
     _closestCache = closest - collider->GetCenter();
 
-    //”¼Œa‚æ‚è‹ß‚¢‚Æ‚±‚ë‚É‚ ‚ê‚Î“–‚½‚Á‚½
+    //åŠå¾„ã‚ˆã‚Šè¿‘ã„ã¨ã“ã‚ã«ã‚ã‚Œã°å½“ãŸã£ãŸ
     double sqDist = _closestCache.GetSqLength();
     double radius = collider->GetRadius() + _radius;
     return (sqDist <= radius * radius);
@@ -88,12 +88,12 @@ bool Capsule::CollisionDetection(const AABB *collider) const
     Vector2D closestOnLine;
 
 
-    //ˆê”Ô‹ß‚¢“_‚ğACrossÏ‚ğ‚à‚Æ‚ÉŒ©‚Â‚¯‚é
+    //ä¸€ç•ªè¿‘ã„ç‚¹ã‚’ã€Crossç©ã‚’ã‚‚ã¨ã«è¦‹ã¤ã‘ã‚‹
     closestOnLine = vertexes[0];
-    double d = abs(Vector2D::Cross(dir.GetNormalized(), vertexes[0] - edgeA));
+    double d = fabs(Vector2D::Cross(dir.GetNormalized(), vertexes[0] - edgeA));
     for (size_t i = 1; i < 4; ++i)
     {
-        double temp = abs(Vector2D::Cross(dir.GetNormalized(), vertexes[i] - edgeA));
+        double temp = fabs(Vector2D::Cross(dir.GetNormalized(), vertexes[i] - edgeA));
         if (temp < d)
         {
             d = temp;
@@ -102,18 +102,18 @@ bool Capsule::CollisionDetection(const AABB *collider) const
     }
     closest = GetClosestPointSegmentToPoint(edgeA, edgeB, closestOnLine);
 
-    //Å‹ßÚ“_‚ª•ª—£²ã‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ’²‚×‚é
+    //æœ€è¿‘æ¥ç‚¹ãŒåˆ†é›¢è»¸ä¸Šã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹
     double dot = Vector2D::Dot(closestOnLine - edgeA, dir);
     bool isOutside = (dot < 0 || dir.GetSqLength() < dot);
 
-    //•ª—£²ã‚É‚È‚¯‚ê‚ÎAAABB‚Ì’¸“_ˆÈŠO‚ªü•ª‚Æ‚ÌÅ‹ßÚ“_‚É‚È‚é
+    //åˆ†é›¢è»¸ä¸Šã«ãªã‘ã‚Œã°ã€AABBã®é ‚ç‚¹ä»¥å¤–ãŒç·šåˆ†ã¨ã®æœ€è¿‘æ¥ç‚¹ã«ãªã‚‹
     if (isOutside)
     {
-        //ƒJƒvƒZƒ‹‚Ì—¼’[‚ÆAABB‚ÌÅ‹ßÚ“_‚ğo‚µ‚Ä
+        //ã‚«ãƒ—ã‚»ãƒ«ã®ä¸¡ç«¯ã¨AABBã®æœ€è¿‘æ¥ç‚¹ã‚’å‡ºã—ã¦
         Vector2D closestA = collider->GetClosestPoint(&edgeA);
         Vector2D closestB = collider->GetClosestPoint(&edgeB);
 
-        //‹ß‚¢•û‚ğÅ‹ß“_‚ÉÌ—p
+        //è¿‘ã„æ–¹ã‚’æœ€è¿‘ç‚¹ã«æ¡ç”¨
         double lengthA = (closestA - edgeA).GetSqLength();
         double lengthB = (closestB - edgeB).GetSqLength();
 
@@ -133,7 +133,7 @@ bool Capsule::CollisionDetection(const AABB *collider) const
 
     double sqLength = (closestOnLine - closest).GetSqLength();
 
-    //‰~‚Ì’†S“_‚ÆOBB‚Ì‹——£‚ª‰~‚Ì”¼Œa‚æ‚è‹ß‚¯‚ê‚Î“–‚½‚Á‚½
+    //å††ã®ä¸­å¿ƒç‚¹ã¨OBBã®è·é›¢ãŒå††ã®åŠå¾„ã‚ˆã‚Šè¿‘ã‘ã‚Œã°å½“ãŸã£ãŸ
     return (sqLength < (_radius * _radius));
 }
 
@@ -150,12 +150,12 @@ bool Capsule::CollisionDetection(const OBB *collider) const
     Vector2D closestOnLine;
 
 
-    //ˆê”Ô‹ß‚¢“_‚ğACrossÏ‚ğ‚à‚Æ‚ÉŒ©‚Â‚¯‚é
+    //ä¸€ç•ªè¿‘ã„ç‚¹ã‚’ã€Crossç©ã‚’ã‚‚ã¨ã«è¦‹ã¤ã‘ã‚‹
     closestOnLine = vertexes[0];
-    double d = abs(Vector2D::Cross(dir.GetNormalized(), vertexes[0] - edgeA));
+    double d = fabs(Vector2D::Cross(dir.GetNormalized(), vertexes[0] - edgeA));
     for (size_t i = 1; i < 4; ++i)
     {
-        double temp = abs(Vector2D::Cross(dir.GetNormalized(), vertexes[i] - edgeA));
+        double temp = fabs(Vector2D::Cross(dir.GetNormalized(), vertexes[i] - edgeA));
         if (temp < d)
         {
             d = temp;
@@ -164,18 +164,18 @@ bool Capsule::CollisionDetection(const OBB *collider) const
     }
     closest = GetClosestPointSegmentToPoint(edgeA, edgeB, closestOnLine);
 
-    //Å‹ßÚ“_‚ª•ª—£²ã‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ’²‚×‚é
+    //æœ€è¿‘æ¥ç‚¹ãŒåˆ†é›¢è»¸ä¸Šã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹
     double dot = Vector2D::Dot(closestOnLine - edgeA, dir);
     bool isOutside = (dot < 0 || dir.GetSqLength() < dot);
 
-    //•ª—£²ã‚É‚È‚¯‚ê‚ÎAAABB‚Ì’¸“_ˆÈŠO‚ªü•ª‚Æ‚ÌÅ‹ßÚ“_‚É‚È‚é
+    //åˆ†é›¢è»¸ä¸Šã«ãªã‘ã‚Œã°ã€AABBã®é ‚ç‚¹ä»¥å¤–ãŒç·šåˆ†ã¨ã®æœ€è¿‘æ¥ç‚¹ã«ãªã‚‹
     if (isOutside)
     {
-        //ƒJƒvƒZƒ‹‚Ì—¼’[‚ÆAABB‚ÌÅ‹ßÚ“_‚ğo‚µ‚Ä
+        //ã‚«ãƒ—ã‚»ãƒ«ã®ä¸¡ç«¯ã¨AABBã®æœ€è¿‘æ¥ç‚¹ã‚’å‡ºã—ã¦
         Vector2D closestA = collider->GetClosestPoint(edgeA);
         Vector2D closestB = collider->GetClosestPoint(edgeB);
 
-        //‹ß‚¢•û‚ğÅ‹ß“_‚ÉÌ—p
+        //è¿‘ã„æ–¹ã‚’æœ€è¿‘ç‚¹ã«æ¡ç”¨
         double lengthA = (closestA - edgeA).GetSqLength();
         double lengthB = (closestB - edgeB).GetSqLength();
 
@@ -195,7 +195,7 @@ bool Capsule::CollisionDetection(const OBB *collider) const
 
     double sqLength = (closestOnLine - closest).GetSqLength();
 
-    //‰~‚Ì’†S“_‚ÆOBB‚Ì‹——£‚ª‰~‚Ì”¼Œa‚æ‚è‹ß‚¯‚ê‚Î“–‚½‚Á‚½
+    //å††ã®ä¸­å¿ƒç‚¹ã¨OBBã®è·é›¢ãŒå††ã®åŠå¾„ã‚ˆã‚Šè¿‘ã‘ã‚Œã°å½“ãŸã£ãŸ
     return (sqLength < (_radius * _radius));
 }
 
@@ -239,7 +239,7 @@ Vector2D Capsule::CalcDumpWith(const Circle *collider) const
 {
     double length = _closestCache.GetLength();
 
-    double ratio = (EPS < length) ? (abs(_radius + collider->GetRadius()) - length) / length : 0;
+    double ratio = (EPS < length) ? (fabs(_radius + collider->GetRadius()) - length) / length : 0;
 
     return Vector2D(_closestCache._x * ratio, _closestCache._y * ratio);
 }
@@ -276,7 +276,7 @@ Vector2D Capsule::CalcDumpWith(const OBB *collider) const
 Vector2D Capsule::CalcDumpWith(const Capsule *collider) const
 {
     double length = _closestCache.GetLength();
-    double ratio = (abs(_radius + collider->_radius) - length) / length;
+    double ratio = (fabs(_radius + collider->_radius) - length) / length;
 
     return Vector2D(_closestCache._x * ratio, _closestCache._y * ratio);
 }

@@ -1,14 +1,14 @@
 #pragma once
 #include "Vector2D.h"
 
-#define min(x, y) (x < y) ? x : y;
-#define max(x, y) (x < y) ? y : x;
+#define min(x, y) (x < y) ? x : y
+#define max(x, y) (x < y) ? y : x
 
-//Šô‰½ŠwŒvZ’†‚Å 0 ‚Æ‚İ‚È‚¹‚é‚Ù‚Ç¬‚³‚¢’l‚ÌŠî€’l
+//ï¿½ô‰½Šwï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½ 0 ï¿½Æ‚İ‚È‚ï¿½ï¿½ï¿½ï¿½Ù‚Çï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ÌŠî€ï¿½l
 #define EPS 0.00000001
-//Šô‰½‹óŠÔ‚Å‚ÌÅ‘å’l
+//ï¿½ô‰½‹ï¿½ï¿½Ô‚Å‚ÌÅ‘ï¿½ï¿½l
 #define MAX 1000000000
-//Šô‰½‹óŠÔ‚Å‚ÌÅ¬’l
+//ï¿½ô‰½‹ï¿½ï¿½Ô‚Å‚ÌÅï¿½ï¿½l
 #define MIN -1000000000
 
 
@@ -24,7 +24,7 @@ static T Clamp(T value, T min, T max)
 }
 
 
-//“_‚Æü•ª‚Ì‹——£‚Ì2æ‚ğ•Ô‚·
+//ï¿½_ï¿½Æï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½
 static double SqDistSegmentToPoint(Vector2D start, Vector2D end, Vector2D point)
 {
     Vector2D se = end - start;
@@ -33,7 +33,7 @@ static double SqDistSegmentToPoint(Vector2D start, Vector2D end, Vector2D point)
 
     double e = Vector2D::Dot(sp, se);
 
-    //“_ ‚ª ü•ª‚ÌŠO‘¤‚É‚ ‚éê‡
+    //ï¿½_ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠOï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½ê‡
     if (e <= 0.0)
         return Vector2D::Dot(sp, sp);
 
@@ -45,7 +45,7 @@ static double SqDistSegmentToPoint(Vector2D start, Vector2D end, Vector2D point)
 }
 
 
-//ü•ª‚Æ“_‚Ì‚»‚ê‚¼‚ê‚Ìü•ªã‚ÌÅ‹ßÚ“_‚ğ•Ô‚·
+//ï¿½ï¿½ï¿½ï¿½ï¿½Æ“_ï¿½Ì‚ï¿½ï¿½ê‚¼ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌÅ‹ßÚ“_ï¿½ï¿½ï¿½Ô‚ï¿½
 static Vector2D GetClosestPointSegmentToPoint(Vector2D startA, Vector2D endA, Vector2D point)
 {
     Vector2D ab = endA - startA;
@@ -78,56 +78,56 @@ static Vector2D GetClosestPointSegmentToPoint(Vector2D startA, Vector2D endA, Ve
 }
 
 
-//ü•ªA‚Æü•ªB‚Ì‚»‚ê‚¼‚ê‚Ìü•ªã‚ÌÅ‹ßÚ“_‚ğ•Ô‚·
+//ï¿½ï¿½ï¿½ï¿½Aï¿½Æï¿½ï¿½ï¿½Bï¿½Ì‚ï¿½ï¿½ê‚¼ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌÅ‹ßÚ“_ï¿½ï¿½ï¿½Ô‚ï¿½
 static std::pair<Vector2D, Vector2D> GetClosestPointSegmentToSegment(Vector2D startA, Vector2D endA, Vector2D startB, Vector2D endB)
 {
-    //ü•ªA
+    //ï¿½ï¿½ï¿½ï¿½A
     Vector2D d1 = endA - startA;
-    //ü•ªB
+    //ï¿½ï¿½ï¿½ï¿½B
     Vector2D d2 = endB - startB;
 
-    //ü•ªAã‚Ì”ä—¦
+    //ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ì”ä—¦
     double s = 0.0;
-    //ü•ªBã‚Ì”ä—¦
+    //ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Ì”ä—¦
     double t = 0.0;
 
-    //n“_‚Ç‚¤‚µ‚ÌƒxƒNƒgƒ‹‚ğ‚Æ‚Á‚Ä‚¨‚­
-    //•½s‚©‚Ç‚¤‚©‚Ì”»’èAˆê•û‚Ìü•ªŠO‚É‚ ‚é‚©‚Ç‚¤‚©‚ÌŠm”F‚É—p‚¢‚é
+    //ï¿½nï¿½_ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
+    //ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½Ì”ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Oï¿½É‚ï¿½ï¿½é‚©ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ÌŠmï¿½Fï¿½É—pï¿½ï¿½ï¿½ï¿½
     Vector2D r = startA - startB;
 
-    //ü•ªA‚Ì‹——£‚Ì2æ
+    //ï¿½ï¿½ï¿½ï¿½Aï¿½Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½
     double a = Vector2D::Dot(d1, d1);
-    //ü•ªB‚Ì‹——£‚Ì2æ
+    //ï¿½ï¿½ï¿½ï¿½Bï¿½Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½
     double e = Vector2D::Dot(d2, d2);
 
-    //’¼üBã‚Éü•ªA‚Ìn“_‚ğË‰e
+    //ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½Aï¿½Ìnï¿½_ï¿½ï¿½ï¿½Ë‰e
     double f = Vector2D::Dot(d2, r);
 
-    //ü•ª‚ÌA‚©B‚ª“_‚Æ‚İ‚È‚¹‚é‚È‚ç
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½Bï¿½ï¿½ï¿½_ï¿½Æ‚İ‚È‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½
     if (a <= 0 && e <= 0)
     {
-        //‚»‚Ì“_‚Ç‚¤‚µ‚ğ•Ô‚·
+        //ï¿½ï¿½ï¿½Ì“_ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½
         return std::make_pair(startA, startB);
     }
 
-    //ü•ªA‚ª“_‚Ìê‡
+    //ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½_ï¿½Ìê‡
     if (a <= 0)
     {
         s = 0.0;
 
-        //ü•ªBã‚ÉË‰eŒ‹‰Ê‚ğƒNƒ‰ƒ“ƒv
+        //ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½ÉË‰eï¿½ï¿½ï¿½Ê‚ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½v
         t = Clamp(f / e, 1.0, 0.0);
     }
     else
     {
-        //’¼üAã‚Éü•ªB‚Ìn“_‚ğË‰e
+        //ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½Bï¿½Ìnï¿½_ï¿½ï¿½ï¿½Ë‰e
         double c = Vector2D::Dot(d1, r);
 
-        //ü•ªB‚ª“_‚Ìê‡
+        //ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½_ï¿½Ìê‡
         if (e <= 0)
         {
             t = 0.0;
-            //ü•ªAã‚ÉË‰eŒ‹‰Ê‚ğƒNƒ‰ƒ“ƒv
+            //ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ÉË‰eï¿½ï¿½ï¿½Ê‚ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½v
             s = Clamp(-c / a, 0.0, 1.0);
         }
         else
@@ -138,17 +138,17 @@ static std::pair<Vector2D, Vector2D> GetClosestPointSegmentToSegment(Vector2D st
             MEMO:
                 s = (b * t - c) / a;
                 t = (b * s + f) / e;
-                ‚Æ‚µ‚ÄƒKƒEƒXÁ‹–@‚ğg‚¤
+                ï¿½Æ‚ï¿½ï¿½ÄƒKï¿½Eï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½gï¿½ï¿½
             */
 
-            //denom : —L—”
+            //denom : ï¿½Lï¿½ï¿½ï¿½ï¿½
             double denom = a * e - b * b;
 
-            //ü•ª‚ª•½s‚Å‚È‚¢ê‡
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½Å‚È‚ï¿½ï¿½ê‡
             if (denom != 0.0)
             {
-                //s‚É‚Â‚¢‚ÄƒKƒEƒX‚ÌÁ‹–@‚ğ“K—p‚µ
-                //’¼üA‚Æ’¼üB‚ÌÅ‹ßÚ“_‚ğŒvZ
+                //sï¿½É‚Â‚ï¿½ï¿½ÄƒKï¿½Eï¿½Xï¿½Ìï¿½ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½Kï¿½pï¿½ï¿½
+                //ï¿½ï¿½ï¿½ï¿½Aï¿½Æ’ï¿½ï¿½ï¿½Bï¿½ÌÅ‹ßÚ“_ï¿½ï¿½ï¿½vï¿½Z
                 s = Clamp((b * f - c * e) / denom, 0.0, 1.0);
             }
             else
@@ -156,10 +156,10 @@ static std::pair<Vector2D, Vector2D> GetClosestPointSegmentToSegment(Vector2D st
                 s = 0.0;
             }
 
-            //’¼üBã‚Ìü•ªA‚É‘Î‚·‚éÅ‹ßÚ“_‚ğŒvZ
+            //ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½Aï¿½É‘Î‚ï¿½ï¿½ï¿½ï¿½Å‹ßÚ“_ï¿½ï¿½ï¿½vï¿½Z
             t = (b * s + f) / e;
 
-            //t‚ÌŒ‹‰Ê‚ğ‚à‚Æ‚Éü•ªA‚ÌË‰eŒ‹‰Ê‚ğƒNƒ‰ƒ“ƒv
+            //tï¿½ÌŒï¿½ï¿½Ê‚ï¿½ï¿½ï¿½ï¿½Æ‚Éï¿½ï¿½ï¿½Aï¿½ÌË‰eï¿½ï¿½ï¿½Ê‚ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½v
             if (t < 0.0)
             {
                 t = 0.0;
@@ -177,28 +177,28 @@ static std::pair<Vector2D, Vector2D> GetClosestPointSegmentToSegment(Vector2D st
 }
 
 
-//“Ê•ï‚Ì“à•”‚Époint‚ª‚ ‚é‚©‚Ç‚¤‚©
+//ï¿½Ê•ï¿½ï¿½Ì“ï¿½ï¿½ï¿½ï¿½ï¿½pointï¿½ï¿½ï¿½ï¿½ï¿½é‚©ï¿½Ç‚ï¿½ï¿½ï¿½
 static bool ContainInConvexHull(const std::vector<Vector2D> &vertexes, const Vector2D &point)
 {
     size_t endIndex = vertexes.size() - 1;
 
     for (size_t i = 0; i < endIndex; ++i)
     {
-        //Še’¸“_‚Å‚Å‚«‚éü•ª‚ÌŠO‘¤‚É‚ ‚Á‚½‚çI—¹
+        //ï¿½eï¿½ï¿½ï¿½_ï¿½Å‚Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠOï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½
         if (Vector2D::Cross((point - vertexes[i]), (vertexes[i + 1]) - vertexes[i]) > EPS)
             return false;
     }
 
-    //ÅŒã‚ÆÅ‰‚Ì’¸“_‚Åì‚éü•ª‚Æ”»’è
+    //ï¿½ÅŒï¿½ï¿½ÆÅï¿½ï¿½Ì’ï¿½ï¿½_ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ”ï¿½ï¿½ï¿½
     if (Vector2D::Cross((point - vertexes[endIndex]), (vertexes[0] - vertexes[endIndex])) > EPS)
         return false;
 
-    //‚±‚±‚Ü‚Å”²‚¯‚½‚ç‚·‚×‚Ä‚Ìü•ª‚Ì“à‘¤‚É‚ ‚é‚±‚Æ‚É‚È‚é
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å”ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚·ï¿½×‚Ä‚Ìï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½é‚±ï¿½Æ‚É‚È‚ï¿½
     return true;
 }
 
 
-//x“_(“_ŒQ’†‚Å‚ ‚é•ûŒü‚ÉÅ‚à‰“‚¢“_)‚ğ“¾‚é
+//ï¿½xï¿½_(ï¿½_ï¿½Qï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉÅ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_)ï¿½ğ“¾‚ï¿½
 static Vector2D GetSupportPoint(Vector2D start, Vector2D end, std::vector<Vector2D> &vertexes)
 {
     double temp = 0;
@@ -208,7 +208,7 @@ static Vector2D GetSupportPoint(Vector2D start, Vector2D end, std::vector<Vector
 
     for (size_t i = 0; i < vertexes.size(); ++i)
     {
-        //‚ ‚é•ûŒü‚É‚à‚Á‚Æ‚à“àÏ’l‚ª‘å‚«‚¢“_‚ğ‰“‚¢“_‚Æ‚İ‚È‚·
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Ï’lï¿½ï¿½ï¿½å‚«ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½Æ‚İ‚È‚ï¿½
         temp = Vector2D::Dot(dir, vertexes[i] - start);
         if (dist <= temp)
         {
@@ -221,11 +221,11 @@ static Vector2D GetSupportPoint(Vector2D start, Vector2D end, std::vector<Vector
 }
 
 
-static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2D &c, Vector2D &point)
+static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2D &c, Vector2D point)
 {
     Vector2D closest;
 
-    //point ‚ª sSeg ‚ÌŠO‘¤‚©ƒ`ƒFƒbƒN
+    //point ï¿½ï¿½ sSeg ï¿½ÌŠOï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
     Vector2D si(a, b);
     Vector2D se(a, c);
     Vector2D sa(a, point);
@@ -238,7 +238,7 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
         return closest;
     }
 
-    //point ‚ª iSeg ‚ÌŠO‘¤‚©ƒ`ƒFƒbƒN
+    //point ï¿½ï¿½ iSeg ï¿½ÌŠOï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
     Vector2D ia(b, point);
     double d3 = Vector2D::Dot(si, ia);
     double d4 = Vector2D::Dot(se, ia);
@@ -248,7 +248,7 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
         return closest;
     }
 
-    //point ‚ª sSeg ‚Æ iseg ‚Ìü•ªã‚É‚ ‚é‚©ƒ`ƒFƒbƒN
+    //point ï¿½ï¿½ sSeg ï¿½ï¿½ iseg ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½é‚©ï¿½`ï¿½Fï¿½bï¿½N
     double vc = d1 * d4 - d3 * d2;
     if (vc <= 0.0 && 0.0 <= d1 && d3 <= 0.0)
     {
@@ -258,7 +258,7 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
         return closest;
     }
 
-    //point ‚ª eSeg ‚ÌŠO‘¤‚©ƒ`ƒFƒbƒN
+    //point ï¿½ï¿½ eSeg ï¿½ÌŠOï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
     Vector2D ea(c, point);
     double d5 = Vector2D::Dot(si, ea);
     double d6 = Vector2D::Dot(se, ea);
@@ -268,7 +268,7 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
         return closest;
     }
 
-    //point ‚ª sSeg‚ÆeSeg‚Ì•Òã‚É‚ ‚é‚©ƒ`ƒFƒbƒN
+    //point ï¿½ï¿½ sSegï¿½ï¿½eSegï¿½Ì•Òï¿½ï¿½É‚ï¿½ï¿½é‚©ï¿½`ï¿½Fï¿½bï¿½N
     double vb = d5 * d2 - d1 * d6;
     if (vb <= 0.0 && 0.0 <= d2 && d6 <= 0.0)
     {
@@ -278,7 +278,7 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
         return closest;
     }
 
-    //point ‚ª iSeg‚ÆeSeg‚Ì•Òã‚É‚ ‚é‚©ƒ`ƒFƒbƒN
+    //point ï¿½ï¿½ iSegï¿½ï¿½eSegï¿½Ì•Òï¿½ï¿½É‚ï¿½ï¿½é‚©ï¿½`ï¿½Fï¿½bï¿½N
     double va = d3 * d6 - d5 * d4;
     if (va <= 0.0 && 0.0 <= (d4 - d3) && 0.0 <= (d5 - d6))
     {
@@ -288,7 +288,7 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
         return closest;
     }
 
-    //‚±‚±‚Ü‚Å‚­‚é‚Æpoint‚ÍOŠpŒ`“à‚É‚ ‚é‚Ì‚ÅAdSÀ•W‚Å•\‚¹‚é
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å‚ï¿½ï¿½ï¿½ï¿½ï¿½pointï¿½ÍOï¿½pï¿½`ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½Ì‚ÅAï¿½dï¿½Sï¿½ï¿½ï¿½Wï¿½Å•\ï¿½ï¿½ï¿½ï¿½
     /*double denom = 1.0 / (va + vb + vc);
     double v = vb * denom;
     double w = vc * denom;

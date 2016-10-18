@@ -73,7 +73,7 @@ bool Circle::CollisionDetection(const Circle *collider) const
 
 bool Circle::CollisionDetection(const AABB *collider) const
 {
-    //‰~‚Ì’†S“_‚ÆAABB‚Ì‹——£‚ª‰~‚Ì”¼Œa‚æ‚è‹ß‚¯‚ê‚Î“–‚½‚Á‚½
+    //å††ã®ä¸­å¿ƒç‚¹ã¨AABBã®è·é›¢ãŒå††ã®åŠå¾„ã‚ˆã‚Šè¿‘ã‘ã‚Œã°å½“ãŸã£ãŸ
     return (collider->SqDistFromPoint(_center) < (_radius * _radius));
 }
 
@@ -110,13 +110,13 @@ Vector2D Circle::CalcDump(const ColliderShape *collider) const
 
 Vector2D Circle::CalcDumpWith(const Circle *collider) const
 {
-    //‚ß‚èž‚Ý‚ÌŒü‚«‚ðo‚µ‚Ä
+    //ã‚ã‚Šè¾¼ã¿ã®å‘ãã‚’å‡ºã—ã¦
     Vector2D dir = *_center - collider->GetCenter();
 
-    //‚Ç‚ê‚­‚ç‚¢‚ß‚èž‚ñ‚Å‚¢‚é‚©ŒvŽZ‚·‚é
+    //ã©ã‚Œãã‚‰ã„ã‚ã‚Šè¾¼ã‚“ã§ã„ã‚‹ã‹è¨ˆç®—ã™ã‚‹
     double intersectDepth = (_radius + collider->_radius) - dir.GetLength();
 
-    //Œü‚«‚Æ‚ß‚èž‚Ý“x‡‚ð‡‚í‚¹A‚ß‚èž‚Ý‰ðœ‚ÌƒxƒNƒgƒ‹‚ðŒvŽZ‚·‚é
+    //å‘ãã¨ã‚ã‚Šè¾¼ã¿åº¦åˆã‚’åˆã‚ã›ã€ã‚ã‚Šè¾¼ã¿è§£é™¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã™ã‚‹
     return dir.GetNormalized() * intersectDepth;
 }
 
@@ -125,14 +125,14 @@ Vector2D Circle::CalcDumpWith(const AABB *aabb) const
 {
     Vector2D point = *_center;
 
-    //‰~’†S‚ÆAABB‚ÌÅ‹ßÚ“_‚ðo‚·
+    //å††ä¸­å¿ƒã¨AABBã®æœ€è¿‘æŽ¥ç‚¹ã‚’å‡ºã™
     Vector2D closestToAABB = aabb->GetClosestPoint(&point);
 
-    //‰~’†S‚ÆÅ‹ßÚ“_‚ðŒ‹‚ñ‚Å‚ß‚èž‚Ý‰ðœ‚Ì•ûŒüƒxƒNƒgƒ‹‚ð‚Â‚­‚é
+    //å††ä¸­å¿ƒã¨æœ€è¿‘æŽ¥ç‚¹ã‚’çµã‚“ã§ã‚ã‚Šè¾¼ã¿è§£é™¤ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’ã¤ãã‚‹
     Vector2D directionCenterToAABB(closestToAABB, point);
 
-    //‚Ç‚ê‚­‚ç‚¢‚ß‚èž‚Ý‰ðœ‚·‚é‚©‚ÍA
-    //‚ß‚èž‚Ý‹ï‡ = (‰~”¼Œa - ‰~‚ÆÅ‹ßÚ“_‚Ì‹——£)
+    //ã©ã‚Œãã‚‰ã„ã‚ã‚Šè¾¼ã¿è§£é™¤ã™ã‚‹ã‹ã¯ã€
+    //ã‚ã‚Šè¾¼ã¿å…·åˆ = (å††åŠå¾„ - å††ã¨æœ€è¿‘æŽ¥ç‚¹ã®è·é›¢)
     double length = directionCenterToAABB.GetLength();
     double dumpScale = _radius - length;
 
@@ -176,7 +176,7 @@ double Circle::SqDistFromPoint(const Vector2D *point, const Circle *sphere) cons
 {
     Vector2D sphereCenter = sphere->GetCenter();
 
-    //‹——£‚Ì2æ - ‘ÎÛ‰~‚Ì”¼Œa‚Ì2æ
+    //è·é›¢ã®2ä¹— - å¯¾è±¡å††ã®åŠå¾„ã®2ä¹—
     double sqDist =
         (point->_x - sphereCenter._x) * (point->_x - sphereCenter._x)
         + (point->_y - sphereCenter._y) * (point->_y - sphereCenter._y);

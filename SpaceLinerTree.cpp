@@ -1,5 +1,5 @@
 #include "SpaceLinerTree.h"
-#include <typeinfo>
+#include "Circle.h"
 
 SpaceLinerTree::SpaceLinerTree(double minX, double minY, double maxX, double maxY, unsigned int level)
 {
@@ -10,26 +10,28 @@ SpaceLinerTree::SpaceLinerTree(double minX, double minY, double maxX, double max
         return;
     }
 
-    //‹óŠÔ‚ÌƒTƒCƒY
+    //ç©ºé–“ã®ã‚µã‚¤ã‚º
     _width = 0.0;
     _height = 0.0;
 
     _minX = 0.0;
     _minY = 0.0;
 
-    //Å¬’PˆÊ‚Ì•
+    //æœ€å°å˜ä½ã®å¹…
     _uWidth = 0.0;
     _uHeight = 0.0;
-    //Å‰ºƒŒƒxƒ‹
+    //æœ€ä¸‹ãƒ¬ãƒ™ãƒ«
     _maxLevel = 0;
-    //Šiq‚Ì”
+    //æ ¼å­ã®æ•°
     _allGridNum = 0;
 }
+
 
 SpaceLinerTree::~SpaceLinerTree()
 {
 
 }
+
 
 bool SpaceLinerTree::Init(double minX, double minY, double maxX, double maxY, unsigned int level)
 {
@@ -39,18 +41,19 @@ bool SpaceLinerTree::Init(double minX, double minY, double maxX, double maxY, un
     _width = maxX - minX;
     _height = maxY - minY;
 
-    //Å¬’PˆÊ‚Ì•‚Í ‹óŠÔƒTƒCƒY / ƒOƒŠƒbƒhƒŒƒxƒ‹^2
+    //æœ€å°å˜ä½ã®å¹…ã¯ ç©ºé–“ã‚µã‚¤ã‚º / ã‚°ãƒªãƒƒãƒ‰ãƒ¬ãƒ™ãƒ«^2
     _uWidth = _width / (1 << level);
     _uHeight = _height / (1 << level);
-    //Å‰ºƒŒƒxƒ‹
+    //æœ€ä¸‹ãƒ¬ãƒ™ãƒ«
     _maxLevel = level;
 
-    //Šiq‚Ì” = (4^(ŠK‘w”+1) -1) /3 ©(4‚Ì”{”-1)/3  
-    _allGridNum = static_cast<unsigned long>((std::pow(4, level + 1) - 1) / 3);
+    //æ ¼å­ã®æ•° = (4^(éšå±¤æ•°+1) -1) /3 â†(4ã®å€æ•°-1)/3  
+    _allGridNum = static_cast<unsigned long>((pow(4, level + 1) - 1) / 3);
     _cellArray.resize(_allGridNum, nullptr);
 
     return true;
 }
+
 
 void SpaceLinerTree::CreateNewGrid(unsigned long cellNum)
 {
@@ -58,12 +61,13 @@ void SpaceLinerTree::CreateNewGrid(unsigned long cellNum)
     {
         _cellArray[cellNum] = new SpaceCell();
 
-        //e‹óŠÔ‚àˆê‚Éì‚Á‚Ä‚µ‚Ü‚¤
+        //è¦ªç©ºé–“ã‚‚ä¸€ç·’ã«ä½œã£ã¦ã—ã¾ã†
         cellNum = (cellNum - 1) >> 2;
         if (_allGridNum <= cellNum)
             break;
     }
 }
+
 
 bool SpaceLinerTree::RegistColliderShape(SpaceTreeAgent *ot)
 {
@@ -84,72 +88,72 @@ bool SpaceLinerTree::RegistColliderShape(SpaceTreeAgent *ot)
     return false;
 }
 
+
 void SpaceLinerTree::SetColList()
 {
     _allCollision.Init();
 
-    //ƒ‹[ƒg‹óŠÔ‚ª–³‚¯‚ê‚Î‹óŠÔ‚ª‚Ü‚¾‘¶İ‚µ‚Ä‚¢‚È‚¢‚Ì‚ÅI—¹
+    //ãƒ«ãƒ¼ãƒˆç©ºé–“ãŒç„¡ã‘ã‚Œã°ç©ºé–“ãŒã¾ã å­˜åœ¨ã—ã¦ã„ãªã„ã®ã§çµ‚äº†
     if (_cellArray[0] == nullptr)
         return;
 
-    //Õ“ËƒŠƒXƒg‚ğì¬‚µ‚ÄƒXƒ^[ƒg
+    //è¡çªãƒªã‚¹ãƒˆã‚’ä½œæˆã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
     std::vector<Collider *>colStack;
     colStack.reserve(128);
-    //e‹óŠÔ‚©‚ç‚Â‚­‚é
-    AddColList(0, std::move(colStack));
+    //è¦ªç©ºé–“ã‹ã‚‰ã¤ãã‚‹
+    AddColList(0, colStack);
     _allCollision.Sort();
 }
 
-//Õ“ËƒŠƒXƒg‚É‚Ç‚ñ‚Ç‚ñ’Ç‰Á‚µ‚Ä‚¢‚­
+
+//è¡çªãƒªã‚¹ãƒˆã«ã©ã‚“ã©ã‚“è¿½åŠ ã—ã¦ã„ã
 void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &cols)
 {
 
-    //1.©•ª‚Ì‹óŠÔ“à‚ÌƒIƒuƒWƒFƒNƒg“¯s‚ÌÕ“ËƒŠƒXƒg‚ğì‚é
-
-    //ƒOƒŠƒbƒh‚É“o˜^‚³‚ê‚Ä‚¢‚éÅãƒŒƒxƒ‹‚ÌƒIƒuƒWƒFƒNƒg‚©‚çƒXƒ^[ƒg
+    //1.è‡ªåˆ†ã®ç©ºé–“å†…ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå¸‚ã®è¡çªãƒªã‚¹ãƒˆã‚’ä½œã‚‹
+    //ã‚°ãƒªãƒƒãƒ‰ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹æœ€ä¸Šãƒ¬ãƒ™ãƒ«ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆ
     SpaceTreeAgent* otParent = _cellArray[cellNum]->parantNode;
     while (otParent != nullptr)
     {
-        //eƒm[ƒh‚É“o˜^‚³‚ê‚½ƒŠƒXƒg‚ğ’H‚Á‚Ä‚¢‚­
+        //è¦ªãƒãƒ¼ãƒ‰ã«ç™»éŒ²ã•ã‚ŒãŸãƒªã‚¹ãƒˆã‚’è¾¿ã£ã¦ã„ã
         SpaceTreeAgent* otChild = otParent->next;
 
-        //ƒŠƒXƒg‚Ì’[‚É’…‚¢‚½‚ç”²‚¯‚é
+        //ãƒªã‚¹ãƒˆã®ç«¯ã«ç€ã„ãŸã‚‰æŠœã‘ã‚‹
         while (otChild != nullptr)
         {
-            //ƒƒ‚ƒŠ‚ğŠm•Û
+            //ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿
             _allCollision.Write(otParent->obj, otChild->obj);
-            //‚³‚ç‚ÉƒŠƒXƒg‚ÌŸ‚ğ’H‚é
+            //ã•ã‚‰ã«ãƒªã‚¹ãƒˆã®æ¬¡ã‚’è¾¿ã‚‹
             otChild = otChild->next;
         }
 
-        //2.Õ“ËƒXƒ^ƒbƒN‚Æ‚ÌÕ“ËƒŠƒXƒgì¬
+        //2.è¡çªã‚¹ã‚¿ãƒƒã‚¯ã¨ã®è¡çªãƒªã‚¹ãƒˆä½œæˆ
         for (auto sub_obj : cols)
         {
-            if ( typeid(*sub_obj->_shape) != typeid(*otParent->obj->_shape) )
-                _allCollision.Write(otParent->obj, sub_obj);
+            _allCollision.Write(otParent->obj, sub_obj);
         }
 
-        //Ÿ‚Ìeƒm[ƒh‚Ö
+        //æ¬¡ã®è¦ªãƒãƒ¼ãƒ‰ã¸
         otParent = otParent->next;
     }
 
-    //3.q‹óŠÔ‚Ìˆ—‚Ö
+    //3.å­ç©ºé–“ã®å‡¦ç†ã¸
     bool ChildFlag = false;
     unsigned long stackedNum = 0;
 
-    //‚»‚ê‚¼‚ê‚Ìq‹óŠÔ‚É‚Â‚¢‚Ä
+    //ãã‚Œãã‚Œã®å­ç©ºé–“ã«ã¤ã„ã¦
     for (int i = 0; i < 4; ++i)
     {
-        //Ÿ‚Ì—v‘f”Ô†‚Í ‘OƒŒƒxƒ‹‚ÌÅŒã”ö(ŠK‘w*4 + 1) + ¡‚ÌƒŒƒxƒ‹”Ô†
+        //æ¬¡ã®è¦ç´ ç•ªå·ã¯ å‰ãƒ¬ãƒ™ãƒ«ã®æœ€å¾Œå°¾(éšå±¤*4 + 1) + ä»Šã®ãƒ¬ãƒ™ãƒ«ç•ªå·
         unsigned long nextElem = cellNum * 4 + 1 + i;
 
         if (nextElem < _allGridNum
             && _cellArray[nextElem] != nullptr)
         {
-            //‚Ü‚¾q‹óŠÔ‚ª–¢„‰ñ‚È‚ç
+            //ã¾ã å­ç©ºé–“ãŒæœªå·¡å›ãªã‚‰
             if (!ChildFlag)
             {
-                //4.“o˜^‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
+                //4.ç™»éŒ²ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã‚€
                 otParent = _cellArray[cellNum]->parantNode;
                 while (otParent != nullptr)
                 {
@@ -159,12 +163,12 @@ void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &
                 }
             }
 
-            //„‰ñƒtƒ‰ƒOON            ChildFlag = true;
+            //å·¡å›ãƒ•ãƒ©ã‚°ON            ChildFlag = true;
             AddColList(nextElem, cols);
         }
     }
 
-    //5. ƒXƒ^ƒbƒN‚©‚çƒIƒuƒWƒFƒNƒg‚ğŠO‚·
+    //5. ã‚¹ã‚¿ãƒƒã‚¯ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¤–ã™
     if (ChildFlag)
     {
         for (unsigned long i = 0; i < stackedNum; i++)
@@ -174,15 +178,15 @@ void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &
 
 
 
-// À•W‚©‚ç‹óŠÔ”Ô†‚ğZo
+// åº§æ¨™ã‹ã‚‰ç©ºé–“ç•ªå·ã‚’ç®—å‡º
 unsigned long SpaceLinerTree::GetMortonNumber(double left, double top, double right, double bottom)
 {
-    // Å¬ƒŒƒxƒ‹‚É‚¨‚¯‚éŠe²ˆÊ’u‚ğZo
+    // æœ€å°ãƒ¬ãƒ™ãƒ«ã«ãŠã‘ã‚‹å„è»¸ä½ç½®ã‚’ç®—å‡º
     unsigned long LT = GetPointElem(left, top);
     unsigned long RB = GetPointElem(right, bottom);
 
-    // ‹óŠÔ”Ô†‚Ì”r‘¼“I˜_—˜a‚©‚ç
-    // Š‘®ƒŒƒxƒ‹‚ğZo
+    // ç©ºé–“ç•ªå·ã®æ’ä»–çš„è«–ç†å’Œã‹ã‚‰
+    // æ‰€å±ãƒ¬ãƒ™ãƒ«ã‚’ç®—å‡º
     unsigned long Def = RB ^ LT;
     unsigned int HiLevel = 0;
 
@@ -193,16 +197,16 @@ unsigned long SpaceLinerTree::GetMortonNumber(double left, double top, double ri
             HiLevel = i + 1;
     }
 
-    //‰E‰º‚ÌŠ‘®”Ô†
+    //å³ä¸‹ã®æ‰€å±ç•ªå·
     unsigned long spaceNum = RB >> (HiLevel * 2);
     unsigned long addNum = static_cast<unsigned long>(
-        (std::pow(4, _maxLevel - HiLevel) - 1) / 3);
+        (pow(4, _maxLevel - HiLevel) - 1) / 3);
     spaceNum += addNum;
 
-    //ƒOƒŠƒbƒh”‚æ‚è‘å‚«‚­‚È‚Á‚½‚ç—áŠO‚È‚Ì‚ÅI—¹
+    //ã‚°ãƒªãƒƒãƒ‰æ•°ã‚ˆã‚Šå¤§ãããªã£ãŸã‚‰ä¾‹å¤–ãªã®ã§çµ‚äº†
     if (_allGridNum < spaceNum)
         return 0xffffffff;
 
-    //ƒOƒŠƒbƒh”Ô†
+    //ã‚°ãƒªãƒƒãƒ‰ç•ªå·
     return spaceNum;
 }

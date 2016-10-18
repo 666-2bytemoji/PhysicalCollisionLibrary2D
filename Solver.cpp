@@ -17,42 +17,35 @@ void Solver::CalcDumpScale()
     const ColliderShape *collA = _collA->_shape;
     const ColliderShape *collB = _collB->_shape;
 
-    //‚ß‚èž‚Ý‚ð‰ðÁ‚·‚éƒxƒNƒgƒ‹‚ðŒvŽZ
-    d = collA->CalcDump(collB);
+    //ã‚ã‚Šè¾¼ã¿ã‚’è§£æ¶ˆã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+    _d = collA->CalcDump(collB);
+    _dB = _d.GetNormalized();
+    _dA = _dB * -1;
 }
+
 
 void Solver::Solve()
 {
     Physicalbody *physA = _collA->_physicalbody;
     Physicalbody *physB = _collB->_physicalbody;
 
-    physA->_move -= Vector2D(d * 0.5);
-    physB->_move += Vector2D(d * 0.5);
-
-    /*
-    //‚Ç‚¿‚ç‚à“®‚­‚È‚çA”¼•ª‚¸‚Â‚ß‚èž‚Ý‰ðœ
-    if ((physA->_isMovable && physB->_isMovable)
-        || (!physA->_isMovable && !physB->_isMovable))
+    //ç‰‡æ–¹ã ã‘å‹•ããªã‚‰ã€å‹•ãæ–¹ã‚’ã‚ã‚Šè¾¼ã¿è§£é™¤
+    if (!physA->IsMovable() == MAX_MASS && physB->IsMovable())
     {
-        physA->_move -= Vector2D(d * 0.5);
-        physB->_move += Vector2D(d * 0.5);
+        physB->_move += _d;
+        return;
+    }
+    if (!physB->IsMovable() && physA->IsMovable())
+    {
+        physA->_move -= _d;
         return;
     }
 
-    //•Ð•û‚¾‚¯“®‚­‚È‚çA“®‚­•û‚ð‚ß‚èž‚Ý‰ðœ
-    if (!physA->_isMovable && physB->_isMovable)
-    {
-        physB->_move += d;
-        return;
-    }
-    if (!physB->_isMovable && physA->_isMovable)
-    {
-        physA->_move -= d;
-        return;
-    }
-    */
-
+    double total = physA->GetMass() + physB->GetMass();
+    physA->_move -= Vector2D(_d * (physB->GetMass() / total));
+    physB->_move += Vector2D(_d * (physA->GetMass() / total));
 }
+
 
 Solver::~Solver()
 {

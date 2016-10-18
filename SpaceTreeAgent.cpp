@@ -19,20 +19,20 @@ SpaceTreeAgent::~SpaceTreeAgent()
 
 bool SpaceTreeAgent::RemoveFromLink()
 {
-    //ƒŠƒ“ƒN‚ðŠÇ—‚·‚é‹óŠÔ‚©‚çŠO‚ê‚Ä‚½‚çI—¹
+    //ãƒªãƒ³ã‚¯ã‚’ç®¡ç†ã™ã‚‹ç©ºé–“ã‹ã‚‰å¤–ã‚Œã¦ãŸã‚‰çµ‚äº†
     if (cell == nullptr)
         return false;
 
-    //Ž©•ª‚ÌŠ‘®‚·‚éƒŠƒ“ƒN‚ðŠÇ—‚·‚é‹óŠÔ‚ÉƒŠƒ“ƒN‚©‚çŠO‚ê‚é‚Æ’Ê’m
+    //è‡ªåˆ†ã®æ‰€å±žã™ã‚‹ãƒªãƒ³ã‚¯ã‚’ç®¡ç†ã™ã‚‹ç©ºé–“ã«ãƒªãƒ³ã‚¯ã‹ã‚‰å¤–ã‚Œã‚‹ã¨é€šçŸ¥
     cell->Pop(this);
 
-    //ŠO‚µ‚½‚ ‚ÆƒŠƒ“ƒN‚ðŒ‹‚Ñ‚Â‚¯‚é
+    //å¤–ã—ãŸã‚ã¨ãƒªãƒ³ã‚¯ã‚’çµã³ã¤ã‘ã‚‹
     if (prev != nullptr)
         prev->next = next;
     if (next != nullptr)
         next->prev = prev;
 
-    //ÅŒã‚É‰Šú‰»
+    //æœ€å¾Œã«åˆæœŸåŒ–
     prev = nullptr;
     next = nullptr;
     cell = nullptr;
@@ -42,5 +42,5 @@ bool SpaceTreeAgent::RemoveFromLink()
 
 void SpaceTreeAgent::Debug()
 {
-    DrawFormatString(0, 120 + index * 32, GetColor(0xff, 0x00, 0x00), "cell: %d", cell->mKey);
+    //DrawFormatString(0, 120 + index * 32, GetColor(0xff, 0x00, 0x00), "cell: %d", cell->mKey);
 }

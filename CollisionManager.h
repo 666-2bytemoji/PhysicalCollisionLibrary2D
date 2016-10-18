@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
-#include "Singleton.h"
+#include "../Singleton.h"
 #include "Collider.h"
 #include "SpaceTreeAgent.h"
 #include "SpaceLinerTree.h"
+#include "../PoolingSystem.h"
 
 
 class CollisionManager : public Singleton<CollisionManager>
@@ -12,15 +13,20 @@ public:
     CollisionManager();
     ~CollisionManager();
 
-    //ColliderをTreeに登録する
+    //Collider繧探ree縺ｫ逋ｻ骭ｲ縺吶ｋ
     void SetObjectToTree(Collider *collider);
-    //Treeの情報を更新する
+    
+    void RemoveObject(Collider *collider);
+    
+    void Clear();
+    
+    //Tree縺ｮ諠�蝣ｱ繧呈峩譁ｰ縺吶ｋ
     void UpdateTree();
 
-    //衝突判定を行う
+    //陦晉ｪ∝愛螳壹ｒ陦後≧
     void TestAllCollision();
 
-    //衝突判定のみを外部からも呼び出せるようにした
+    //陦晉ｪ∝愛螳壹�ｮ縺ｿ繧貞､夜Κ縺九ｉ繧ょ他縺ｳ蜃ｺ縺帙ｋ繧医≧縺ｫ縺励◆
     static bool CollisionDetection(ColliderShape *collA, ColliderShape *collB);
 
     void Debug();
@@ -28,9 +34,8 @@ public:
 private:
 
     SpaceLinerTree _spaceTree;
-    std::vector<SpaceTreeAgent *> _treeAgents;
-    std::vector<Collider *> _colliders;
-    std::vector<ColliderShape *> _shapes;
+    PoolingSystem<SpaceTreeAgent> _treeAgents;
+    PoolingSystem<Collider> _colliders;
 };
 
 #define COLLISION_MGR CollisionManager::GetInstance()

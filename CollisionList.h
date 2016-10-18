@@ -2,7 +2,6 @@
 #include <utility>
 #include <vector>
 #include "Collider.h"
-#include "DxLib.h"
 #include <algorithm>
 
 class CollList
@@ -24,10 +23,10 @@ public:
 
 
 	////
-	//Œ»İ‚ÌÕ“ËƒŠƒXƒg‚Ìcapasity
+	//ç¾åœ¨ã®è¡çªãƒªã‚¹ãƒˆã®capasity
 	size_t collCapacity;
-	//Œ»İ’Tõ’†‚Ì•ª–Ø‚ÌˆÊ’u
+	//ç¾åœ¨æ¢ç´¢ä¸­ã®åˆ†æœ¨ã®ä½ç½®
 	size_t index;
-	//Õ“ËƒŠƒXƒg–{‘Ì.
+	//è¡çªãƒªã‚¹ãƒˆæœ¬ä½“.
 	std::vector<std::pair<Collider *, Collider *>>colVec;
 };

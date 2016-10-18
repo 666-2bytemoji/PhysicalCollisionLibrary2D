@@ -4,8 +4,8 @@
 #include "Vector2D.h"
 
 /*
-	Õ“Ë‰“š(Õ“Ë‚ÌƒIƒuƒWƒFƒNƒg“¯m‚Ì‚ß‚è‚İ‚ğ‰ğœ‚·‚é‚½‚ß) ‚Ì
-	ŒvZ‚ÆˆÚ“®ˆ—‚ğs‚¤ƒNƒ‰ƒX
+	è¡çªå¿œç­”(è¡çªæ™‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ã®ã‚ã‚Šè¾¼ã¿ã‚’è§£é™¤ã™ã‚‹ãŸã‚) ã®
+	è¨ˆç®—ã¨ç§»å‹•å‡¦ç†ã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
 */
 
 class Collider;
@@ -19,19 +19,30 @@ public:
     Solver(Collider *collA, Collider *collB);
 	~Solver();
 
-	//‚ß‚è‚İ‚ğ‰ğœ
+	//ã‚ã‚Šè¾¼ã¿ã‚’è§£é™¤
 	void Solve();
+
+    Vector2D GetNormal(Collider *coll) const 
+    {
+        if (coll == _collA)
+            return _dA; 
+
+        if (coll == _collB)
+            return _dB;
+
+        return Vector2D::zero;
+    }
 
 private:
 
-	//‚Ç‚ê‚­‚ç‚¢‚ß‚è‚ñ‚Å‚é‚©ŒvZ
-	void CalcDumpScale();
+    //ã©ã‚Œãã‚‰ã„ã‚ã‚Šè¾¼ã‚“ã§ã‚‹ã‹è¨ˆç®—
+    void CalcDumpScale();
 
-	//Õ“Ë‚µ‚½ƒIƒuƒWƒFƒNƒg
-	const Collider *_collA, *_collB;
+    //è¡çªã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    const Collider *_collA, *_collB;
 
-	//‚ß‚è‚İ‚ğ‰ğœ‚·‚éƒxƒNƒgƒ‹
-	Vector2D d;
+    //ã‚ã‚Šè¾¼ã¿ã‚’è§£é™¤ã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+    Vector2D _d, _dA, _dB;
 };
 
 #endif

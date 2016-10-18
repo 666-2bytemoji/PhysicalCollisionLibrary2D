@@ -111,21 +111,21 @@ Vector2D AABB::CalcDumpWith(const Circle *collider) const
 
 Vector2D AABB::CalcDumpWith(const AABB *collider) const
 {
-    //ã‰º‚Ì‚ß‚è‚İ“x
+    //ä¸Šä¸‹ã®ã‚ã‚Šè¾¼ã¿åº¦
     double upperIntersection = GetMaxY() - collider->GetMinY();
     double lowerIntersection = collider->GetMaxY() - GetMinY();
 
-    //¶‰E‚Ì‚ß‚è‚İ“x
+    //å·¦å³ã®ã‚ã‚Šè¾¼ã¿åº¦
     double leftIntersection = GetMaxX() - collider->GetMinX();
     double rightIntersection = collider->GetMaxX() - GetMinX();
 
-    //…•½•ûŒü‚Æ‚’¼•ûŒü‚Ì‚ß‚è‚İ“x
+    //æ°´å¹³æ–¹å‘ã¨å‚ç›´æ–¹å‘ã®ã‚ã‚Šè¾¼ã¿åº¦
     double verticalIntersection;
     double horizontalIntersection;
 
     Vector2D dir(*_center, *collider->_center);
 
-    //ã‰º‚Ì”»’è
+    //ä¸Šä¸‹ã®åˆ¤å®š
     if (0 < dir._y * Vector2D::down._y)
     {
         verticalIntersection = -upperIntersection;
@@ -135,7 +135,7 @@ Vector2D AABB::CalcDumpWith(const AABB *collider) const
         verticalIntersection = lowerIntersection;
     }
 
-    //¶‰E‚Ì”»’è
+    //å·¦å³ã®åˆ¤å®š
     if (0 < dir._x * Vector2D::right._x)
     {
         horizontalIntersection = -leftIntersection;
@@ -145,7 +145,7 @@ Vector2D AABB::CalcDumpWith(const AABB *collider) const
         horizontalIntersection = rightIntersection;
     }
 
-    //¬‚³‚¢•û‚Ì‚ß‚è‚İ‚ğ‰ğœ
+    //å°ã•ã„æ–¹ã®ã‚ã‚Šè¾¼ã¿ã‚’è§£é™¤
     if (horizontalIntersection * horizontalIntersection
     > verticalIntersection * verticalIntersection)
     {
@@ -186,10 +186,10 @@ Vector2D AABB::CalcDumpWith(const ConvexHull *collider) const
 double AABB::SqDistFromPoint(const Vector2D *point) const
 {
     double sqDist = 0.0;
-    //Še²‚É‘Î‚µ‚ÄAAABB‚©‚ç“_‚ª‚Í‚İo‚Ä‚¢‚½ê‡‚Ì‹——£‚ğŒvZB
+    //å„è»¸ã«å¯¾ã—ã¦ã€AABBã‹ã‚‰ç‚¹ãŒã¯ã¿å‡ºã¦ã„ãŸå ´åˆã®è·é›¢ã‚’è¨ˆç®—ã€‚
     double Dist = point->_x;
 
-    //“_‚ªAABB‚ÌŠO‚É‚ ‚Á‚½‚ç‚»‚Ì²‚Ì‹——£‚ğ‰ÁZ
+    //ç‚¹ãŒAABBã®å¤–ã«ã‚ã£ãŸã‚‰ãã®è»¸ã®è·é›¢ã‚’åŠ ç®—
     if (point->_x < GetMinX())
     {
         sqDist += (GetMinX() - point->_x) * (GetMinX() - point->_x);
@@ -209,7 +209,7 @@ double AABB::SqDistFromPoint(const Vector2D *point) const
         sqDist += (point->_y - GetMaxY()) * (point->_y - GetMaxY());
     }
 
-    //‹——£‚Ì•½•û‚ğ•Ô‚·
+    //è·é›¢ã®å¹³æ–¹ã‚’è¿”ã™
     return sqDist;
 }
 
@@ -218,7 +218,7 @@ Vector2D AABB::GetClosestPoint(const Vector2D *point) const
 {
     Vector2D closest;
 
-    //“_‚ªAABB‚ÌŠO‚É‚ ‚Á‚½‚ç‚»‚Ì²‚Ì‹——£‚ğ‰ÁZ
+    //ç‚¹ãŒAABBã®å¤–ã«ã‚ã£ãŸã‚‰ãã®è»¸ã®è·é›¢ã‚’åŠ ç®—
     if (point->_x < GetMinX())
     {
         closest._x = GetMinX();
@@ -230,7 +230,7 @@ Vector2D AABB::GetClosestPoint(const Vector2D *point) const
     else
         closest._x = point->_x;
 
-    //“_‚ªAABB‚ÌŠO‚É‚ ‚Á‚½‚ç‚»‚Ì²‚Ì‹——£‚ğ‰ÁZ
+    //ç‚¹ãŒAABBã®å¤–ã«ã‚ã£ãŸã‚‰ãã®è»¸ã®è·é›¢ã‚’åŠ ç®—
     if (point->_y < GetMinY())
     {
         closest._y = GetMinY();

@@ -14,7 +14,7 @@ public:
     double GetMaxY() const override;
     Vector2D GetCenter() const override;
 
-    //‘¼‚ÌÕ“Ë”»’è—Ìˆæ‚ÆŒğ·‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    //ä»–ã®è¡çªåˆ¤å®šé ˜åŸŸã¨äº¤å·®ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
     virtual bool CollisionWith(const ColliderShape *collider) const override;
     virtual bool CollisionDetection(const Circle *collider) const override;
     virtual bool CollisionDetection(const AABB *collider) const override;
@@ -23,7 +23,7 @@ public:
     virtual bool CollisionDetection(const Triangle *collider) const override;
     virtual bool CollisionDetection(const ConvexHull *collider) const override;
 
-    //‘¼‚ÌÕ“Ë”»’è—Ìˆæ‚Æ‚Ç‚Ì‚æ‚¤‚ÉŒğ·‚µ‚Ä‚¢‚é‚©
+    //ä»–ã®è¡çªåˆ¤å®šé ˜åŸŸã¨ã©ã®ã‚ˆã†ã«äº¤å·®ã—ã¦ã„ã‚‹ã‹
     virtual Vector2D CalcDump(const ColliderShape *collider) const override;
     virtual Vector2D CalcDumpWith(const Circle *collider) const override;
     virtual Vector2D CalcDumpWith(const AABB *collider) const override;
@@ -43,10 +43,10 @@ public:
 
 private:
 
-    //ƒJƒvƒZƒ‹‚ÌŒü‚«‚Æ’·‚³
+    //ã‚«ãƒ—ã‚»ãƒ«ã®å‘ãã¨é•·ã•
     Vector2D _direction;
 
-    //‘¾‚³‚ÆƒLƒƒƒbƒv‚Ì”¼Œa
+    //å¤ªã•ã¨ã‚­ãƒ£ãƒƒãƒ—ã®åŠå¾„
     double _radius;
 
     mutable Vector2D _closestCache;

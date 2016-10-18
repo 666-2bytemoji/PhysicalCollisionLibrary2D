@@ -4,9 +4,7 @@
 #include "SpaceTreeAgent.h"
 #include "CollisionList.h"
 
-#include "DxLib.h"
-
-//‹óŠÔüŒ`l•ª–Ø
+//ç©ºé–“ç·šå½¢å››åˆ†æœ¨
 class SpaceLinerTree
 {
 public:
@@ -19,20 +17,20 @@ public:
 
     void CreateNewGrid(unsigned long cellNum);
 
-    //Õ“ËƒŠƒXƒgì¬
+    //è¡çªãƒªã‚¹ãƒˆä½œæˆ
     void SetColList();
     //	void SetColList(CollList *colList);
 
-    //Õ“ËƒŠƒXƒg‚É‚Ç‚ñ‚Ç‚ñ’Ç‰Á‚µ‚Ä‚¢‚­
+    //è¡çªãƒªã‚¹ãƒˆã«ã©ã‚“ã©ã‚“è¿½åŠ ã—ã¦ã„ã
     void AddColList(unsigned long cellNum, std::vector<Collider *> &cols);
 
     unsigned long GetCollNum() const { return _allCollision.GetPairNum(); }
 
 
-    // À•W‚©‚ç‹óŠÔ”Ô†‚ğZo
+    // åº§æ¨™ã‹ã‚‰ç©ºé–“ç•ªå·ã‚’ç®—å‡º
     unsigned long GetMortonNumber(double left, double top, double right, double bottom);
 
-    // ƒrƒbƒg•ªŠ„ŠÖ”
+    // ãƒ“ãƒƒãƒˆåˆ†å‰²é–¢æ•°
     unsigned long BitSeparate32(unsigned long n)
     {
         n = (n | (n << 8)) & 0x00ff00ff;
@@ -41,13 +39,13 @@ public:
         return (n | (n << 1)) & 0x55555555;
     }
 
-    // 2Dƒ‚[ƒgƒ“‹óŠÔ”Ô†ZoŠÖ”
+    // 2Dãƒ¢ãƒ¼ãƒˆãƒ³ç©ºé–“ç•ªå·ç®—å‡ºé–¢æ•°
     unsigned short Get2DMortonNumber(unsigned short x, unsigned short y)
     {
         return (unsigned short)(BitSeparate32(x) | (BitSeparate32(y) << 1));
     }
 
-    // À•W¨üŒ`4•ª–Ø—v‘f”Ô†•ÏŠ·ŠÖ”
+    // åº§æ¨™â†’ç·šå½¢4åˆ†æœ¨è¦ç´ ç•ªå·å¤‰æ›é–¢æ•°
     unsigned long GetPointElem(double posX, double posY)
     {
         return Get2DMortonNumber(
@@ -56,28 +54,26 @@ public:
             );
     }
 
-    //Õ“ËƒŠƒXƒg‚ÌÀ‘Ì
+    //è¡çªãƒªã‚¹ãƒˆã®å®Ÿä½“
     CollList _allCollision;
 
     void Debug()
     {
-        //		DrawFormatString(0, 300, GetColor(0xff, 0x00, 0x00), "coll:%d", allCollision.colVec.size());
-        //		DrawFormatString(0, 300, GetColor(0xff, 0x00, 0x00), "coll:%d", allCollision.colVec.size());
-        _allCollision.Debug();
+         _allCollision.Debug();
     };
 
 private:
-    //‹óŠÔ‚ÌƒTƒCƒY
+    //ç©ºé–“ã®ã‚µã‚¤ã‚º
     double _width, _height;
     double _minX, _minY;
 
-    //Å¬’PˆÊ‚Ì•
+    //æœ€å°å˜ä½ã®å¹…
     double _uWidth, _uHeight;
-    //Å‰ºƒŒƒxƒ‹
+    //æœ€ä¸‹ãƒ¬ãƒ™ãƒ«
     unsigned int _maxLevel;
-    //Šiq‚Ì”
+    //æ ¼å­ã®æ•°
     unsigned long _allGridNum;
 
-    //Šiq‚ÌüŒ`ƒ|ƒCƒ“ƒ^”z—ñ
+    //æ ¼å­ã®ç·šå½¢ãƒã‚¤ãƒ³ã‚¿é…åˆ—
     std::vector<SpaceCell *> _cellArray;
 };

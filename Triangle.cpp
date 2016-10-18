@@ -5,7 +5,6 @@
 #include "Capsule.h"
 #include "ConvexHull.h"
 #include "Geometric.h"
-#include "DxLib.h"
 
 
 Triangle::Triangle(Vector2D *vertexA, Vector2D *vertexB, Vector2D *vertexC)

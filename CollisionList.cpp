@@ -30,6 +30,16 @@ void CollList::ResetPos()
 
 void CollList::Write(Collider *obj1, Collider *obj2)
 {
+    /*
+    if ((typeid(*(obj1->_shape)) == typeid(Triangle))
+        && ((typeid(*(obj2->_shape)) == typeid(Triangle))))
+        return;
+
+    if ((typeid(*(obj1->_shape)) == typeid(Circle))
+        && ((typeid(*(obj2->_shape)) == typeid(Circle))))
+        return;
+    */
+
     colVec.push_back(std::move(std::make_pair(obj1, obj2)));
     index++;
 }
@@ -48,5 +58,4 @@ void CollList::Sort()
 
 void CollList::Debug()
 {
-    DrawFormatString(0, 0, GetColor(0x00, 0xff, 0x00), "collList : %d", colVec.size());
 }

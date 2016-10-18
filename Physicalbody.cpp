@@ -1,7 +1,8 @@
 #include "Physicalbody.h"
 
 
-Physicalbody::Physicalbody()
+Physicalbody::Physicalbody(long mass)
+    : _mass(mass)
 {
 }
 

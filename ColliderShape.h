@@ -15,32 +15,31 @@ public:
     ColliderShape(Vector2D *pivot, Vector2D size);
     virtual ~ColliderShape();
 
-    //Šg‘å—¦‚ğŠÜ‚ñ‚¾Õ“Ë”»’è‚ÌƒTƒCƒY‚ğ“¾‚é
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æ‹¡å¤§ç‡ã‚’è¸ã¾ãˆãŸå¤§ãã•ã‚’å–å¾—ã™ã‚‹
     Vector2D GetSize() const
     {
         return Vector2D(_baseSize._x * _scale._x, _baseSize._y * _scale._y);
     }
 
-    //Šg‘å—¦‚ğl—¶‚µ‚È‚¢AÕ“Ë”»’è‚ÌŒ³‚ÌƒTƒCƒY‚ğ“¾‚é
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æ‹¡å¤§ç‡ã‚’è€ƒæ…®ã—ãªã„ã¨ãã®å¤§ãã•ã‚’å–å¾—ã™ã‚‹
     Vector2D GetBaseSize() const { return _baseSize; }
 
-    //Šg‘å—¦‚ğ•Ô‚·
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æ‹¡å¤§ç‡ã‚’å–å¾—ã™ã‚‹
     Vector2D GetScale() const { return _scale; }
 
-    //‘å‚«‚³‚ÌŠg‘å—¦İ’è
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æ‹¡å¤§ç‡ã‚’è¨­å®šã™ã‚‹
     virtual void SetScale(const Vector2D scale);
 
-    //‹óŠÔ•ªŠ„‚ğAABBŠî€‚Ås‚¤‚½‚ß
-    //‚»‚ê‚¼‚ê‚ÌŒ`‚ÉÅ‘åÅ¬‚ğ•Ô‚³‚¹‚é‚æ‚¤‚É‚·‚é
+    //å„è»¸ã«ãŠã„ã¦ã®æœ€å¤§æœ€å°ç‚¹ã‚’è¿”ã™
     virtual double GetMinX() const = 0;
     virtual double GetMaxX() const = 0;
     virtual double GetMinY() const = 0;
     virtual double GetMaxY() const = 0;
 
-    //}Œ`‚Ì’†SÀ•W‚ğ•Ô‚·
+    //ä¸­å¿ƒåº§æ¨™ã‚’å–å¾—ã™ã‚‹
     virtual Vector2D GetCenter() const = 0;
 
-    //‘¼‚ÌÕ“Ë”»’è—Ìˆæ‚ÆŒğ·‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã©ã†ã—ãŒäº¤å·®ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
     virtual bool CollisionWith(const ColliderShape *collider) const = 0;
     virtual bool CollisionDetection(const Circle *collider) const = 0;
     virtual bool CollisionDetection(const AABB *collider) const = 0;
@@ -49,7 +48,7 @@ public:
     virtual bool CollisionDetection(const Triangle *collider) const = 0;
     virtual bool CollisionDetection(const ConvexHull *collider) const = 0;
 
-    //‘¼‚ÌÕ“Ë”»’è—Ìˆæ‚Æ‚Ç‚Ì‚æ‚¤‚ÉŒğ·‚µ‚Ä‚¢‚é‚©
+    //äº¤å·®ã‚’è§£é™¤ã™ã‚‹éš›ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’å¾—ã‚‹
     virtual Vector2D CalcDump(const ColliderShape *collider) const = 0;
     virtual Vector2D CalcDumpWith(const Circle *collider) const = 0;
     virtual Vector2D CalcDumpWith(const AABB *collider) const = 0;
@@ -58,27 +57,30 @@ public:
     virtual Vector2D CalcDumpWith(const Triangle *collider) const = 0;
     virtual Vector2D CalcDumpWith(const ConvexHull *collider) const = 0;
 
-    //‹«ŠEƒ{ƒŠƒ…[ƒ€‚Ìü‚ğ•`‚­
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æç”»
     virtual void Draw() = 0;
-    //‹«ŠEƒ{ƒŠƒ…[ƒ€‚ğ•ï‚Ş‹éŒ`‚ğ•`‚­
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’åŒ…ã‚ã‚‹å¤§ãã•ã®AABBã‚’æç”»ã™ã‚‹
     void DrawAABB();
 
-    //‹«ŠEƒ{ƒŠƒ…[ƒ€‚ğ•ï‚Ş‹«ŠE‹…‚ğ¶¬‚·‚é
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’åŒ…ã‚ã‚‹å¤§ãã•ã®çƒã‚’å¾—ã‚‹
     //Circle* CreateWrapedCircle() const = 0;
-    //‹«ŠEƒ{ƒŠƒ…[ƒ€‚ğ•ï‚Ş‹«ŠE‹…‚Ì”¼Œa‚ğ•Ô‚·
+    //å¢ƒç•Œãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’åŒ…ã‚ã‚‹å¤§ãã•ã®çƒã®åŠå¾„
     //double GetWrapedRadius() const = 0;
 
     bool _isCrossed;
 
+    //åˆ¤å®šã®ã¿ã§ç‰©ç†å‡¦ç†ã‚’è¡Œã‚ãªã„ã‹ã©ã†ã‹
+    bool _isDetectionOnly;
+
 protected:
 
-    //’†SÀ•W
+    //ä¸­å¿ƒç‚¹
     Vector2D *_center;
 
-    //c‰¡‚ÌŒ³ƒTƒCƒY
+    //æ‹¡å¤§ç‡ã‚’è€ƒæ…®ã—ãªã„ã¨ã(æ‹¡å¤§ç‡ 1,1)ã®å¤§ãã•
     Vector2D _baseSize;
 
-    //Šg‘å—¦BŒ³‚Ì‘å‚«‚³‚ÉƒxƒNƒgƒ‹‚Ì¬•ª‚ğŠ|‚¯‡‚í‚¹‚é
+    //æ‹¡å¤§ç‡
     Vector2D _scale;
 };
 

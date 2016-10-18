@@ -5,18 +5,24 @@
 #include "Rigidbody.h"
 
 /*
-    ColliderShape‚ÆPhysicalbody‚Ì‹´“n‚µ‚ğ‚·‚é
+    ColliderShapeã¨Physicalbodyã®æ©‹æ¸¡ã—ã‚’ã™ã‚‹
 */
+
+class CollidableObject;
 
 class Collider
 {
+    friend class CollisionManager;
 public:
-    Collider(ColliderShape *shape, Physicalbody *rigidbody);
+    Collider(ColliderShape *shape, Physicalbody *rigidbody, CollidableObject *obj);
     ~Collider();
 
     void SetShape(ColliderShape *shape);
 
     ColliderShape *_shape;
     Physicalbody *_physicalbody;
+
+private:
+    CollidableObject *_obj;
 };
 

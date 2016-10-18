@@ -6,13 +6,13 @@
 class Elasticbody : public Physicalbody
 {
 public:
-    Elasticbody(std::vector<Vector2D *> &controlPoints);
+    Elasticbody(std::vector<Vector2D *> &controlPoints, long mass = 1);
     ~Elasticbody();
 
-    //Õ“Ë”»’èŒã‚ÌˆÊ’uˆÚ“®
+    //è¡çªåˆ¤å®šå¾Œã®ä½ç½®ç§»å‹•
     void Integrate() override;
 
-    //Œ»İ‚ÌˆÚ“®—Ê•ªAˆÊ’u‚ğ–ß‚·
+    //ç¾åœ¨ã®ç§»å‹•é‡åˆ†ã€ä½ç½®ã‚’æˆ»ã™
     void CancelIntegrate() override;
 
 
