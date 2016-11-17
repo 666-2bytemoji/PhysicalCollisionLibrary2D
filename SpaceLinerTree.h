@@ -22,7 +22,7 @@ public:
     //	void SetColList(CollList *colList);
 
     //衝突リストにどんどん追加していく
-    void AddColList(unsigned long cellNum, std::vector<Collider *> &cols);
+    void AddColList(unsigned long cellNum, std::vector<ColliderShape *> &cols);
 
     unsigned long GetCollNum() const { return _allCollision.GetPairNum(); }
 

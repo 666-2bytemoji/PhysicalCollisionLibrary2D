@@ -12,22 +12,23 @@ class Collider;
 class ColliderShape;
 class Rigidbody;
 class Elasticbody;
+class Physicalbody;
 
 class Solver
 {
 public:
-    Solver(Collider *collA, Collider *collB);
+    Solver(ColliderShape *collA, ColliderShape *collB, Physicalbody *physA, Physicalbody *physB);
 	~Solver();
 
 	//めり込みを解除
 	void Solve();
 
-    Vector2D GetNormal(Collider *coll) const 
+    Vector2D GetNormal(Physicalbody *phys) const 
     {
-        if (coll == _collA)
+        if (phys == _physA)
             return _dA; 
 
-        if (coll == _collB)
+        if (phys == _physB)
             return _dB;
 
         return Vector2D::zero;
@@ -39,7 +40,8 @@ private:
     void CalcDumpScale();
 
     //衝突したオブジェクト
-    const Collider *_collA, *_collB;
+    ColliderShape *_collA, *_collB;
+    Physicalbody *_physA, *_physB;
 
     //めり込みを解除するベクトル
     Vector2D _d, _dA, _dB;

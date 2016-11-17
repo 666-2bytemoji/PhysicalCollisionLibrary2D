@@ -1,10 +1,10 @@
 #include "SpaceTreeAgent.h"
 
-SpaceTreeAgent::SpaceTreeAgent(Collider *arg_obj, int id)
+SpaceTreeAgent::SpaceTreeAgent(ColliderShape *arg_obj, int id)
     : next(nullptr)
     , prev(nullptr)
     , cell(nullptr)
-    , obj(arg_obj)
+    , _shape(arg_obj)
 {
     index = id;
 }
@@ -14,7 +14,7 @@ SpaceTreeAgent::~SpaceTreeAgent()
     prev = nullptr;
     next = nullptr;
     cell = nullptr;
-    obj = nullptr;
+    _shape = nullptr;
 }
 
 bool SpaceTreeAgent::RemoveFromLink()

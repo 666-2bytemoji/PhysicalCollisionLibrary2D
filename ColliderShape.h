@@ -8,9 +8,11 @@ class OBB;
 class Capsule;
 class Triangle;
 class ConvexHull;
+class Collider;
 
 class ColliderShape
 {
+    friend class CollisionManager;
 public:
     ColliderShape(Vector2D *pivot, Vector2D size);
     virtual ~ColliderShape();
@@ -26,6 +28,9 @@ public:
 
     //境界ボリュームの拡大率を取得する
     Vector2D GetScale() const { return _scale; }
+
+    void SetCollider(Collider* collider) { _collider = collider; }
+    Collider* GetColliderPtr() const { return _collider; }
 
     //境界ボリュームの拡大率を設定する
     virtual void SetScale(const Vector2D scale);
@@ -82,5 +87,7 @@ protected:
 
     //拡大率
     Vector2D _scale;
+
+    Collider* _collider;
 };
 

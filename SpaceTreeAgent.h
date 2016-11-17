@@ -1,15 +1,15 @@
 #pragma once
 #include "SpaceCell.h"
-#include "Collider.h"
+#include "ColliderShape.h"
 
 class SpaceCell;
-class Collider;
+class ColliderShape;
 
 //オブジェクトのツリー登録を担う
 class SpaceTreeAgent
 {
 public:
-    SpaceTreeAgent(Collider* shape, int id);
+    SpaceTreeAgent(ColliderShape* shape, int id);
     virtual ~SpaceTreeAgent();
 
     bool RemoveFromLink();
@@ -19,7 +19,7 @@ public:
     SpaceCell *cell;
 
     //自身の当り判定
-    Collider *obj;
+    ColliderShape *_shape;
 
     //衝突リストの、前後のオブジェクトを持つ格子への双方向リンク
     SpaceTreeAgent *next, *prev;

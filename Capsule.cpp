@@ -299,3 +299,9 @@ void Capsule::SetScale(const Vector2D scale)
     _scale = scale;
     _radius = _baseSize._x * scale._x;
 }
+
+
+void Capsule::LookAt(const Vector2D dir)
+{
+    _direction = dir;
+}

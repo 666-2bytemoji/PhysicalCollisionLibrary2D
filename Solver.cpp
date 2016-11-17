@@ -4,9 +4,11 @@
 #include "Vector2D.h"
 #include "Rigidbody.h"
 
-Solver::Solver(Collider *collA, Collider *collB)
+Solver::Solver(ColliderShape *collA, ColliderShape *collB, Physicalbody *physA, Physicalbody *physB)
     : _collA(collA)
     , _collB(collB)
+    , _physA(physA)
+    , _physB(physB)
 {
     CalcDumpScale();
 }
@@ -14,11 +16,8 @@ Solver::Solver(Collider *collA, Collider *collB)
 
 void Solver::CalcDumpScale()
 {
-    const ColliderShape *collA = _collA->_shape;
-    const ColliderShape *collB = _collB->_shape;
-
     //めり込みを解消するベクトルを計算
-    _d = collA->CalcDump(collB);
+    _d = _collA->CalcDump(_collB);
     _dB = _d.GetNormalized();
     _dA = _dB * -1;
 }
@@ -26,24 +25,21 @@ void Solver::CalcDumpScale()
 
 void Solver::Solve()
 {
-    Physicalbody *physA = _collA->_physicalbody;
-    Physicalbody *physB = _collB->_physicalbody;
-
     //片方だけ動くなら、動く方をめり込み解除
-    if (!physA->IsMovable() == MAX_MASS && physB->IsMovable())
+    if (!_physA->IsMovable() == MAX_MASS && _physB->IsMovable())
     {
-        physB->_move += _d;
+        _physB->_move += _d;
         return;
     }
-    if (!physB->IsMovable() && physA->IsMovable())
+    if (!_physB->IsMovable() && _physA->IsMovable())
     {
-        physA->_move -= _d;
+        _physA->_move -= _d;
         return;
     }
 
-    double total = physA->GetMass() + physB->GetMass();
-    physA->_move -= Vector2D(_d * (physB->GetMass() / total));
-    physB->_move += Vector2D(_d * (physA->GetMass() / total));
+    double total = _physA->GetMass() + _physB->GetMass();
+    _physA->_move -= Vector2D(_d * (_physB->GetMass() / total));
+    _physB->_move += Vector2D(_d * (_physA->GetMass() / total));
 }
 
 

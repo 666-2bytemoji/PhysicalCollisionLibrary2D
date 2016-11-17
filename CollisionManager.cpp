@@ -2,9 +2,9 @@
 #include "CollidableObject.h"
 #include "Solver.h"
 
-
 CollisionManager::CollisionManager()
     : _spaceTree(-1500, -1500, 1500, 1500, 8)
+    , _detectionCount(0)
 {
     _treeAgents._objects.reserve(1024);
 }
@@ -30,36 +30,38 @@ void CollisionManager::Clear()
 }
 
 
-void CollisionManager::SetObjectToTree(Collider *collider)
+void CollisionManager::SetObjectToTree(ColliderShape *shape)
 {
-    if (collider->_shape == nullptr)
+    if (shape == nullptr)
         return;
 
-    _treeAgents.Add(new SpaceTreeAgent(collider, _treeAgents._objects.size()));
-    _colliders.Add(collider);
+    _treeAgents.Add(new SpaceTreeAgent(shape, _treeAgents._objects.size()));
+    _colliders.Add(shape);
 }
 
 
-void CollisionManager::RemoveObject(Collider *collider)
+void CollisionManager::RemoveObject(ColliderShape *shape)
 {
-    if (collider->_shape == nullptr)
+    if (shape == nullptr)
         return;
     
     for(size_t i=0; i< _treeAgents._objects.size(); ++i)
     {
-        if (_treeAgents._objects[i]->obj->_shape == collider->_shape)
+        //Remove依頼のあったものと一致していたら削除
+        if (_treeAgents._objects[i]->_shape == shape)
         {
             _treeAgents.Remove(_treeAgents._objects[i]);
             _treeAgents._objects[i]->RemoveFromLink();
         }
     }
     
-    _colliders.Remove(collider);
+    _colliders.Remove(shape);
 }
 
 
 void CollisionManager::UpdateTree()
 {
+    _detectionCount = 0;
     _colliders.Update();
     _treeAgents.Update();
     
@@ -70,7 +72,7 @@ void CollisionManager::UpdateTree()
         //再構築
         _spaceTree.RegistColliderShape(agent);
 
-        agent->obj->_shape->_isCrossed = false;
+        agent->_shape->_isCrossed = false;
     }
 }
 
@@ -83,26 +85,23 @@ void CollisionManager::TestAllCollision()
     //空間分割で衝突してるかも、と判断されたペアだけ判定
     for (auto col : _spaceTree._allCollision.colVec)
     {
-        auto objA = col.first->_obj;
-        auto objB = col.second->_obj;
+        auto shapeA = col.first;
+        auto shapeB = col.second;
+        auto colA = shapeA->_collider;
+        auto colB = shapeB->_collider;
+        auto objA = colA->_obj;
+        auto objB = colB->_obj;
+        auto bodyA = colA->_physicalbody;
+        auto bodyB = colB->_physicalbody;
 
-        //衝突しないタイプどうしだったら判定しない
-        if (!CollidableObject::IsCollidable(objA->GetType(), objB->GetType()))
-            continue;
-            
-        auto colA = col.first->_shape;
-        auto colB = col.second->_shape;
-        auto bodyA = col.first->_physicalbody;
-        auto bodyB = col.second->_physicalbody;
-
-        //仮どうして
+        //仮移動して
         bodyA->Integrate();
         bodyB->Integrate();
 
         //衝突判定
-        bool result = CollisionDetection(colA, colB);
-        colA->_isCrossed = (result || colA->_isCrossed);
-        colB->_isCrossed = (result || colB->_isCrossed);
+        bool result = CollisionDetection(shapeA, shapeB);
+        shapeA->_isCrossed = (result || shapeA->_isCrossed);
+        shapeB->_isCrossed = (result || shapeB->_isCrossed);
 
         //当たってなければ仮移動をキャンセルして終了
         if (!result)
@@ -112,8 +111,10 @@ void CollisionManager::TestAllCollision()
             continue;
         }
 
+        _detectionCount++;
+
         //衝突判定のみ行う設定なら、接触時のイベントを発生させて終了
-        if (colA->_isDetectionOnly || colB->_isDetectionOnly)
+        if (shapeA->_isDetectionOnly || shapeB->_isDetectionOnly)
         {
             objA->ContactWith(*objB);
             objB->ContactWith(*objA);
@@ -123,7 +124,7 @@ void CollisionManager::TestAllCollision()
         }
 
         //境界ボリュームの交差を解消する設定をする
-        Solver solver(col.first, col.second);
+        Solver solver(shapeA, shapeB, bodyA, bodyB);
 
         //衝突のイベントを発生させる
         objA->CollisionWith(*objB, solver);
@@ -148,14 +149,16 @@ bool CollisionManager::CollisionDetection(ColliderShape *colA, ColliderShape *co
 
 void CollisionManager::Debug()
 {
-    for (auto collider : _colliders._objects)
+    for (auto shape : _colliders._objects)
     {
-        collider->_shape->Draw();
-        collider->_shape->DrawAABB();
+        shape->Draw();
+        shape->DrawAABB();
     }
     for (auto agent : _treeAgents._objects)
     {
         agent->Debug();
     }
     _spaceTree.Debug();
+
+    //fk_Window::printf("count : %d", _detectionCount);
 }

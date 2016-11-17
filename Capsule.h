@@ -31,9 +31,9 @@ public:
     virtual Vector2D CalcDumpWith(const Capsule *collider) const override;
     virtual Vector2D CalcDumpWith(const Triangle *collider) const override;
     virtual Vector2D CalcDumpWith(const ConvexHull *collider) const override;
-
+    
+    void LookAt(Vector2D dir);
     void SetScale(const Vector2D scale) override;
-
     void Draw() override;
 
     //Original Methods
@@ -41,6 +41,8 @@ public:
     Vector2D GetEdgeA() const { return Vector2D(_center->_x - _direction._x * 0.5, _center->_y - _direction._y * 0.5); }
     Vector2D GetEdgeB() const { return Vector2D(_center->_x + _direction._x * 0.5, _center->_y + _direction._y * 0.5); }
 
+    Vector2D GetVector() const { return GetEdgeB() - GetEdgeA(); }
+    
 private:
 
     //カプセルの向きと長さ

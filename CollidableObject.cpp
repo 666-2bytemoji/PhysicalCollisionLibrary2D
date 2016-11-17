@@ -1,29 +1,30 @@
 #include "CollidableObject.h"
+#include "../CollidableObjectManager.h"
 
-std::vector<int32_t> CollidableObject::_collidableBitTable;
+std::vector<int32_t> CollidableObject::_collidableBitTable(static_cast<int>(Type::TYPE_NUM), INT32_MAX);
 
 CollidableObject::CollidableObject(Vector2D pos, ColliderShape *shape, Physicalbody *rigidbody)
 : _position(pos)
 , _direction(0, 1)
+, _parent(nullptr)
 , _collider(shape, rigidbody, this)
 , _type(Type::DEFAULT)
 {
-    if (_collidableBitTable.size() == 0)
-    {
-        _collidableBitTable.resize(static_cast<int>(Type::TYPE_NUM), INT32_MAX);
-    }
-    
+    OBJECT_MGR->Add(this);
 }
 
 
 CollidableObject::~CollidableObject()
 {
-}
-
-
-void CollidableObject::AddAction(std::function<void()> action)
-{
-    _actions.push_back(action);
+    OBJECT_MGR->Remove(this);
+    for (auto child : _children)
+    {
+        if (child != nullptr)
+        {
+            child->_parent = nullptr;
+            OBJECT_MGR->Remove(child);
+        }
+    }
 }
 
 
@@ -35,10 +36,6 @@ void CollidableObject::ResetOnFrame()
 
 void CollidableObject::Update()
 {
-    for (auto action : _actions)
-    {
-        action();
-    }
 }
 
 
@@ -84,7 +81,7 @@ void CollidableObject::SetCollidableFlag(Type type, Type opponentType, bool flag
 }
 
 
-bool CollidableObject::IsCollidable(Type type, Type opponentType)
+bool CollidableObject::IsCollidablePair(Type type, Type opponentType)
 {
     int index = static_cast<int>(type);
     int shift = static_cast<int>(opponentType);

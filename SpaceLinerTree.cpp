@@ -71,7 +71,7 @@ void SpaceLinerTree::CreateNewGrid(unsigned long cellNum)
 
 bool SpaceLinerTree::RegistColliderShape(SpaceTreeAgent *ot)
 {
-    auto shape = ot->obj->_shape;
+    auto shape = ot->_shape;
     unsigned long cellNum = GetMortonNumber(
         shape->GetMinX(),
         shape->GetMinY(),
@@ -98,7 +98,7 @@ void SpaceLinerTree::SetColList()
         return;
 
     //衝突リストを作成してスタート
-    std::vector<Collider *>colStack;
+    std::vector<ColliderShape *>colStack;
     colStack.reserve(128);
     //親空間からつくる
     AddColList(0, colStack);
@@ -107,7 +107,7 @@ void SpaceLinerTree::SetColList()
 
 
 //衝突リストにどんどん追加していく
-void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &cols)
+void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<ColliderShape *> &cols)
 {
 
     //1.自分の空間内のオブジェクト同市の衝突リストを作る
@@ -122,7 +122,7 @@ void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &
         while (otChild != nullptr)
         {
             //メモリを確保
-            _allCollision.Write(otParent->obj, otChild->obj);
+            _allCollision.Write(otParent->_shape, otChild->_shape);
             //さらにリストの次を辿る
             otChild = otChild->next;
         }
@@ -130,7 +130,7 @@ void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &
         //2.衝突スタックとの衝突リスト作成
         for (auto sub_obj : cols)
         {
-            _allCollision.Write(otParent->obj, sub_obj);
+            _allCollision.Write(otParent->_shape, sub_obj);
         }
 
         //次の親ノードへ
@@ -157,13 +157,14 @@ void SpaceLinerTree::AddColList(unsigned long cellNum, std::vector<Collider *> &
                 otParent = _cellArray[cellNum]->parantNode;
                 while (otParent != nullptr)
                 {
-                    cols.push_back(otParent->obj);
+                    cols.push_back(otParent->_shape);
                     otParent = otParent->next;
                     stackedNum++;
                 }
             }
 
-            //巡回フラグON            ChildFlag = true;
+            //巡回フラグON            
+            ChildFlag = true;
             AddColList(nextElem, cols);
         }
     }
