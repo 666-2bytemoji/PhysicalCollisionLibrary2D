@@ -79,7 +79,16 @@ void Triangle::Draw()
     
     DrawLine(*vertexes[0], *vertexes[1], color);
     DrawLine(*vertexes[1], *vertexes[2], color);
-    DrawLine(*vertexes[2], *vertexes[3], color);
+    DrawLine(*vertexes[2], *vertexes[0], color);
+
+    /*
+    DrawLine( (*vertexes[0] + *vertexes[1]) * 0.5
+             , (*vertexes[0] + *vertexes[1]) * 0.5 + Vector2D::Cross((*vertexes[1] - *vertexes[0]), false), color);
+    */
+     
+    auto center = GetCenter();
+    DrawCircle(center, 3, ColorPalette::BLACK4, true);
+    //DrawLine(center, center + _verticalVecCache, ColorPalette::GREEN4);
 }
 
 

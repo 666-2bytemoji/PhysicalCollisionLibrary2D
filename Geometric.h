@@ -177,7 +177,6 @@ static std::pair<Vector2D, Vector2D> GetClosestPointSegmentToSegment(Vector2D st
 }
 
 
-//�ʕ��̓�����point�����邩�ǂ���
 static bool ContainInConvexHull(const std::vector<Vector2D> &vertexes, const Vector2D &point)
 {
     size_t endIndex = vertexes.size() - 1;
@@ -185,12 +184,12 @@ static bool ContainInConvexHull(const std::vector<Vector2D> &vertexes, const Vec
     for (size_t i = 0; i < endIndex; ++i)
     {
         //�e���_�łł��������̊O���ɂ��������I��
-        if (Vector2D::Cross((point - vertexes[i]), (vertexes[i + 1]) - vertexes[i]) > EPS)
+        if (Vector2D::Cross((point - vertexes[i]), (vertexes[i + 1]) - vertexes[i]) < EPS)
             return false;
     }
 
     //�Ō��ƍŏ��̒��_�ō��������Ɣ���
-    if (Vector2D::Cross((point - vertexes[endIndex]), (vertexes[0] - vertexes[endIndex])) > EPS)
+    if (Vector2D::Cross((point - vertexes[endIndex]), (vertexes[0] - vertexes[endIndex])) < EPS)
         return false;
 
     //�����܂Ŕ������炷�ׂĂ̐����̓����ɂ��邱�ƂɂȂ�
@@ -296,4 +295,28 @@ static Vector2D GetClosestPointTriangleToPoint(Vector2D &a, Vector2D &b, Vector2
     closest._y = b->y + v * si._y + w * se._y;*/
     closest = point;
     return closest;
+}
+
+
+//三角形の頂点の並び順を考慮した面積の2倍を返す
+//ABCが反時計周りなら +
+//時計回りなら -
+//線分とみなせないほど近いなら0
+static double GetSignedArea2D(const Vector2D &vertexA, const Vector2D &vertexB, const Vector2D &vertexC)
+{
+    return (vertexA._x - vertexC._x) * (vertexB._y - vertexC._y)
+            - (vertexA._y - vertexC._y) * (vertexB._x - vertexC._x);
+}
+
+
+static bool IsIntersect(const Vector2D &startA, const Vector2D &endA,
+                 const Vector2D &startB, const Vector2D &endB)
+{
+    //AとBの始点で作る三角形の面積と
+    double a1 = GetSignedArea2D(startA, endA, startB);
+    //AとBの終点で作る三角形の面積が
+    double a2 = GetSignedArea2D(startA, endA, endB);
+    
+    //符号が異なるなら、Aに対してBの始点と終点は異なる側にある = 交差している
+    return (a1 * a2 > 0);
 }

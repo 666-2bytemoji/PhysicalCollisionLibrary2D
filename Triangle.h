@@ -35,11 +35,24 @@ public:
     void Draw() override;
     std::array<Vector2D*, 3> GetVertexes() const { return _vertexes; };
 
+    bool ContainInTriangle(const Vector2D point) const;
+    
 private:
 
+    void CalcIntersectDump(const Triangle *collider, const size_t index) const;
+    
     Vector2D *_vertexA, *_vertexB, *_vertexC;
     std::array<Vector2D*, 3> _vertexes;
 
+    //
+    mutable int _result;
+    
+    //It is ClosestPoint on Circle or Capsule's Bounding Volume;
     mutable Vector2D _closestCache;
+
+    //交差した辺のキャッシュ
+    mutable Vector2D _verticalVecCache;
+    //交差した頂点のキャッシュ
+    mutable Vector2D _intersectCache;
 };
 
